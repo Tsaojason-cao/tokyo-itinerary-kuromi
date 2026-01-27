@@ -24,13 +24,13 @@ export function JapaneseText({ japanese, chinese, showTranslation = true }: Japa
   };
 
   return (
-    <div className="inline-flex items-center gap-2 group">
-      <div className="flex flex-col">
+    <span className="inline-flex items-center gap-2 group">
+      <span className="flex flex-col">
         <span className="font-medium text-purple-900">{chinese}</span>
         {showTranslation && (
           <span className="text-sm text-gray-500">{japanese}</span>
         )}
-      </div>
+      </span>
       <Button
         variant="ghost"
         size="sm"
@@ -41,6 +41,6 @@ export function JapaneseText({ japanese, chinese, showTranslation = true }: Japa
       >
         <Volume2 className={`w-4 h-4 ${isPlaying ? 'text-purple-600 animate-pulse' : 'text-gray-400'}`} />
       </Button>
-    </div>
+    </span>
   );
 }
