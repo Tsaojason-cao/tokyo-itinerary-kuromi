@@ -26,7 +26,7 @@ import {
 import { Link } from "wouter";
 import { VisualRouteMap } from "@/components/VisualRouteMap";
 
-export default function Day3() {
+export default function Day5() {
   const [checkedSpots, setCheckedSpots] = useState<Set<string>>(new Set());
   const [language, setLanguage] = useState<'zh' | 'ja' | 'en'>('zh');
   

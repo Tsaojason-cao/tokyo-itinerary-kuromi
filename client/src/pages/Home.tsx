@@ -540,6 +540,117 @@ export default function Home() {
           </TabsContent>
         </Tabs>
 
+        {/* Planner Link */}
+        <div className="mt-8 p-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg border-2 border-purple-300 shadow-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-purple-900 flex items-center gap-2">
+                <Sparkles className="w-6 h-6 fill-purple-600 text-purple-600" />
+                模块化行程规划器
+              </h3>
+              <p className="text-sm text-purple-700 mt-1">
+                自定义你的东京之旅 · 智能路线规划 · 50+个景点可选
+              </p>
+            </div>
+            <Link href="/planner">
+              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                开始规划 →
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Days Navigation */}
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <Card className="border-purple-300 bg-purple-50">
+            <CardHeader>
+              <CardTitle className="text-lg">Day 1</CardTitle>
+              <CardDescription>抵达日 · 上野</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-3">成田机场 → 上野 → 秋叶原</p>
+              <Button variant="outline" className="w-full" disabled>
+                当前页面
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Link href="/day2">
+            <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
+              <CardHeader>
+                <CardTitle className="text-lg">Day 2</CardTitle>
+                <CardDescription>浅草 · 横滨</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">浅草寺 → 横滨 → 晴空塔</p>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/day3">
+            <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
+              <CardHeader>
+                <CardTitle className="text-lg">Day 3</CardTitle>
+                <CardDescription>新宿 · 原宿 · 涩谷</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">时尚购物线 · 潮流文化</p>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/day4">
+            <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
+              <CardHeader>
+                <CardTitle className="text-lg">Day 4</CardTitle>
+                <CardDescription>银座 · 东京站 · 皇居</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">高端文化线 · 历史建筑</p>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/day5">
+            <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
+              <CardHeader>
+                <CardTitle className="text-lg">Day 5</CardTitle>
+                <CardDescription>台场 · 六本木</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">现代艺术线 · 海滨风光</p>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/day6">
+            <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
+              <CardHeader>
+                <CardTitle className="text-lg">Day 6</CardTitle>
+                <CardDescription>秋叶原 · 上野 · 离开</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">动漫文化线 · 最后购物</p>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+
         {/* Bottom Navigation */}
         <div className="mt-8 flex justify-between items-center p-4 bg-white rounded-lg border-2 border-purple-200 shadow-lg">
           <Button variant="outline" disabled className="opacity-50">

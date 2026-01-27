@@ -6,6 +6,11 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Day2 from "./pages/Day2";
+import Day3 from "./pages/Day3";
+import Day4 from "./pages/Day4";
+import Day5 from "./pages/Day5";
+import Day6 from "./pages/Day6";
+import Planner from "./pages/Planner";
 
 
 function Router() {
@@ -13,6 +18,11 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/day2"} component={Day2} />
+      <Route path={"/day3"} component={Day3} />
+      <Route path={"/day4"} component={Day4} />
+      <Route path={"/day5"} component={Day5} />
+      <Route path={"/day6"} component={Day6} />
+      <Route path={"/planner"} component={Planner} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
