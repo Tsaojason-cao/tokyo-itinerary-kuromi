@@ -30,6 +30,8 @@ import {
   type Location,
   type OptimizedRoute
 } from "@/utils/tsp";
+import { generateDetailedRoute, type DetailedRoute } from "@/utils/transit";
+import { DetailedTransit, CompactTransit } from "@/components/DetailedTransit";
 
 export default function Planner() {
   const [step, setStep] = useState(1);
@@ -37,6 +39,8 @@ export default function Planner() {
   const [selectedSpots, setSelectedSpots] = useState<Set<string>>(new Set());
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
   const [optimizedRoute, setOptimizedRoute] = useState<OptimizedRoute | null>(null);
+  const [detailedRoutes, setDetailedRoutes] = useState<Map<number, DetailedRoute>>(new Map());
+  const [expandedStep, setExpandedStep] = useState<number | null>(null);
 
   const allTags = getAllTags();
 
@@ -97,6 +101,22 @@ export default function Planner() {
 
     const route = optimizeRoute(start, destinations);
     setOptimizedRoute(route);
+    
+    // 生成每段路线的详细交通信息
+    const newDetailedRoutes = new Map<number, DetailedRoute>();
+    route.steps.forEach((step, index) => {
+      const detailedRoute = generateDetailedRoute(
+        step.from.lat,
+        step.from.lng,
+        step.from.name,
+        step.to.lat,
+        step.to.lng,
+        step.to.name
+      );
+      newDetailedRoutes.set(index, detailedRoute);
+    });
+    setDetailedRoutes(newDetailedRoutes);
+    
     setStep(3);
   };
 
@@ -418,6 +438,38 @@ export default function Planner() {
                               约{formatDuration(step.duration)}
                             </div>
                           </div>
+
+                          {/* 详细交通信息 */}
+                          {detailedRoutes.has(idx) && (
+                            <div className="mb-4">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => setExpandedStep(expandedStep === idx ? null : idx)}
+                                className="w-full justify-between"
+                              >
+                                <span className="flex items-center gap-2">
+                                  <Info className="w-4 h-4" />
+                                  {expandedStep === idx ? '隐藏' : '查看'}详细交通步骤
+                                </span>
+                                <ArrowRight className={`w-4 h-4 transition-transform ${
+                                  expandedStep === idx ? 'rotate-90' : ''
+                                }`} />
+                              </Button>
+                              
+                              {expandedStep === idx && (
+                                <div className="mt-3">
+                                  <DetailedTransit route={detailedRoutes.get(idx)!} />
+                                </div>
+                              )}
+                              
+                              {expandedStep !== idx && (
+                                <div className="mt-2 p-3 bg-gray-50 rounded-lg">
+                                  <CompactTransit route={detailedRoutes.get(idx)!} />
+                                </div>
+                              )}
+                            </div>
+                          )}
 
                           <div className="pt-3 border-t border-purple-100">
                             <h3 className="font-bold text-lg text-purple-900 flex items-center gap-2">
