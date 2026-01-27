@@ -156,10 +156,13 @@ export default function Home() {
               <CardContent className="space-y-4">
                 <div className="relative">
                   <img 
-                    src="/images/cute_kuromi_map_2_6.png" 
-                    alt="2月6日路线图" 
-                    className="w-full rounded-lg border-2 border-purple-200"
+                    src="/images/route_map_2_6_clear.png" 
+                    alt="2月6日路线图 - 中日英三语对照" 
+                    className="w-full rounded-lg border-2 border-purple-200 shadow-lg"
                   />
+                  <p className="text-sm text-gray-500 mt-2 text-center">
+                    路线图包含中文、日文和英文说明，方便在日本使用
+                  </p>
                 </div>
                 
                 <div className="space-y-3">
