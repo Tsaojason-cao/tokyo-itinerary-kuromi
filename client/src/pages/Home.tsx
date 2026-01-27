@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { JapaneseText } from "@/components/JapaneseText";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -44,7 +45,7 @@ export default function Home() {
                 <Heart className="w-8 h-8 fill-pink-400 text-pink-400" />
                 东京浪漫之旅
               </h1>
-              <p className="text-sm text-purple-600/70 mt-1">2/6 - 2/12 · 库洛米风格行程</p>
+              <p className="text-sm text-purple-600/70 mt-1">2/6 - 2/11 · 库洛米风格行程</p>
             </div>
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="bg-purple-100 text-purple-700">
@@ -144,7 +145,12 @@ export default function Home() {
           <TabsContent value="route" className="space-y-4">
             <Card className="border-purple-200 shadow-lg">
               <CardHeader>
-                <CardTitle>路线1: 成田机场 → 上野APA酒店</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                <span>路线1:</span>
+                <JapaneseText japanese="成田空港" chinese="成田机场" />
+                <span>→</span>
+                <JapaneseText japanese="上野APAホテル" chinese="上野APA酒店" />
+              </CardTitle>
                 <CardDescription>京成Skyliner直达，约41分钟</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -162,7 +168,9 @@ export default function Home() {
                       1
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-purple-900">成田机场 T1/T2</h4>
+                      <h4 className="font-semibold text-purple-900">
+                        <JapaneseText japanese="成田空港 ターミナル1・2" chinese="成田机场 T1/T2" />
+                      </h4>
                       <p className="text-sm text-gray-600 mt-1">
                         前往B1层京成电铁售票处，购买Skyliner车票（约2,520日元）
                       </p>
@@ -176,7 +184,7 @@ export default function Home() {
                     <div className="flex-1">
                       <h4 className="font-semibold text-purple-900">乘坐Skyliner</h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        开往<strong>京成上野</strong>方向，车程约41分钟直达
+                        开往<strong><JapaneseText japanese="京成上野" chinese="京成上野" showTranslation={false} /></strong>方向，车程约41分钟直达
                       </p>
                       <Badge className="mt-2 bg-blue-100 text-blue-700">
                         <Clock className="w-3 h-3 mr-1" />
@@ -190,9 +198,11 @@ export default function Home() {
                       3
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-purple-900">京成上野站</h4>
+                      <h4 className="font-semibold text-purple-900">
+                        <JapaneseText japanese="京成上野駅" chinese="京成上野站" />
+                      </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        从<strong>池之端口 (Ikenohata Exit)</strong>出站
+                        从<strong><JapaneseText japanese="池之端口" chinese="池之端口" showTranslation={false} /></strong>出站
                       </p>
                     </div>
                   </div>
@@ -214,7 +224,13 @@ export default function Home() {
 
             <Card className="border-purple-200 shadow-lg">
               <CardHeader>
-                <CardTitle>路线2: 上野 → 秋叶原夜逛</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                <span>路线2:</span>
+                <JapaneseText japanese="上野" chinese="上野" />
+                <span>→</span>
+                <JapaneseText japanese="秋葉原" chinese="秋叶原" />
+                <span>夜逛</span>
+              </CardTitle>
                 <CardDescription>JR山手线，仅需2站</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -224,7 +240,9 @@ export default function Home() {
                       1
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-purple-900">JR上野站</h4>
+                      <h4 className="font-semibold text-purple-900">
+                        <JapaneseText japanese="JR上野駅" chinese="JR上野站" />
+                      </h4>
                       <p className="text-sm text-gray-600 mt-1">
                         从酒店步行3分钟到JR上野站（不忍口）
                       </p>
@@ -254,10 +272,11 @@ export default function Home() {
                     <div className="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold flex-shrink-0">
                       ✓
                     </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-green-900">秋叶原站</h4>
+                    <div className="flex-1">                      <h4 className="font-semibold text-purple-900">
+                        <JapaneseText japanese="秋葉原駅" chinese="秋叶原站" />
+                      </h4>
                       <p className="text-sm text-gray-600 mt-1">
-                        从<strong>电器街口 (Electric Town Exit)</strong>出站，开始探索二次元圣地
+                        从<strong><JapaneseText japanese="電気街口" chinese="电器街口" showTranslation={false} /></strong>出站，开始探索二次元圣地
                       </p>
                     </div>
                   </div>
@@ -522,7 +541,7 @@ export default function Home() {
           <Button variant="outline" disabled className="opacity-50">
             ← 上一天
           </Button>
-          <span className="text-sm text-gray-600">第1天 / 共7天</span>
+          <span className="text-sm text-gray-600">第1天 / 共6天</span>
           <Button className="bg-purple-600 hover:bg-purple-700">
             下一天 →
           </Button>
@@ -532,7 +551,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white/80 backdrop-blur-md border-t border-purple-200 mt-12">
         <div className="container py-6 text-center text-sm text-gray-600">
-          <p>💜 东京浪漫之旅 · 库洛米风格行程 💜</p>
+          <p>💜 东京浪漫之旅 · 库洛米风格行程 (2/6-2/11) 💜</p>
           <p className="mt-1">祝两位旅途愉快！</p>
         </div>
       </footer>
