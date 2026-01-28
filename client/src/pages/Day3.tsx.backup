@@ -26,7 +26,7 @@ import {
 import { Link } from "wouter";
 import { VisualRouteMap } from "@/components/VisualRouteMap";
 
-export default function Day6() {
+export default function Day3() {
   const [checkedSpots, setCheckedSpots] = useState<Set<string>>(new Set());
   const [language, setLanguage] = useState<'zh' | 'ja' | 'en'>('zh');
   
@@ -41,41 +41,12 @@ export default function Day6() {
   };
 
   const speakJapanese = (text: string) => {
-    if (!('speechSynthesis' in window)) {
-      console.error('Speech synthesis not supported');
-      return;
-    }
-
-    // 取消当前正在播放的语音
-    window.speechSynthesis.cancel();
-
-    // 等待一小段时间确保取消完成
-    setTimeout(() => {
+    if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ja-JP';
       utterance.rate = 0.8;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-
-      // 获取可用的语音列表
-      const voices = window.speechSynthesis.getVoices();
-      const japaneseVoices = voices.filter(voice => voice.lang.startsWith('ja'));
-      
-      // 如果有日语语音包，使用第一个
-      if (japaneseVoices.length > 0) {
-        utterance.voice = japaneseVoices[0];
-      }
-
-      utterance.onerror = (event) => {
-        console.error('Speech synthesis error:', event);
-      };
-
-      try {
-        window.speechSynthesis.speak(utterance);
-      } catch (error) {
-        console.error('Failed to speak:', error);
-      }
-    }, 100);
+      window.speechSynthesis.speak(utterance);
+    }
   };
 
   const openNavigation = (placeName: string, lat?: number, lng?: number) => {

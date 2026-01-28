@@ -41,12 +41,41 @@ export default function Day3() {
   };
 
   const speakJapanese = (text: string) => {
-    if ('speechSynthesis' in window) {
+    if (!('speechSynthesis' in window)) {
+      console.error('Speech synthesis not supported');
+      return;
+    }
+
+    // 取消当前正在播放的语音
+    window.speechSynthesis.cancel();
+
+    // 等待一小段时间确保取消完成
+    setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ja-JP';
       utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
-    }
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+
+      // 获取可用的语音列表
+      const voices = window.speechSynthesis.getVoices();
+      const japaneseVoices = voices.filter(voice => voice.lang.startsWith('ja'));
+      
+      // 如果有日语语音包，使用第一个
+      if (japaneseVoices.length > 0) {
+        utterance.voice = japaneseVoices[0];
+      }
+
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event);
+      };
+
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        console.error('Failed to speak:', error);
+      }
+    }, 100);
   };
 
   const openNavigation = (placeName: string, lat?: number, lng?: number) => {
