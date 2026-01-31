@@ -17,7 +17,8 @@ import {
   CheckCircle2,
   AlertCircle,
   Star,
-  Heart
+  Heart,
+  Sparkles
 } from "lucide-react";
 
 export default function Home() {
