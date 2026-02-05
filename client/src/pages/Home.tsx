@@ -34,6 +34,18 @@ export default function Home() {
     setCheckedSpots(newSet);
   };
 
+  const speakJapanese = (text: string) => {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ja-JP';
+    utterance.rate = 0.9;
+    const voices = window.speechSynthesis.getVoices();
+    const japaneseVoice = voices.find(v => v.lang.startsWith('ja'));
+    if (japaneseVoice) utterance.voice = japaneseVoice;
+    window.speechSynthesis.speak(utterance);
+  };
+
   const progress = (checkedSpots.size / 8) * 100;
 
   return (
