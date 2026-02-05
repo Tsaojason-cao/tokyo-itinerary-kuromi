@@ -1,4 +1,5 @@
 import { useState } from "react";
+// Updated: 2026-02-05 06:59
 import { Link } from "wouter";
 import { JapaneseText } from "@/components/JapaneseText";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +19,8 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles
+  Sparkles,
+  Volume2
 } from "lucide-react";
 
 export default function Home() {
