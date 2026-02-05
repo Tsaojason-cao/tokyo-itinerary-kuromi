@@ -38,6 +38,64 @@ export default function Phrases() {
       { zh: "可以打包吗？", ja: "持ち帰りできますか", romaji: "Mochikaeri dekimasu ka" },
       { zh: "推荐什么？", ja: "おすすめは何ですか", romaji: "Osusume wa nan desu ka" }
     ]},
+    { category: "拉面点餐", items: [
+      { zh: "一碗拉面", ja: "ラーメン一杯お願いします", romaji: "Raamen ippai onegaishimasu" },
+      { zh: "豚骨拉面", ja: "とんこつラーメン", romaji: "Tonkotsu raamen" },
+      { zh: "味噌拉面", ja: "味噌ラーメン", romaji: "Miso raamen" },
+      { zh: "酱油拉面", ja: "醤油ラーメン", romaji: "Shouyu raamen" },
+      { zh: "盐味拉面", ja: "塩ラーメン", romaji: "Shio raamen" },
+      { zh: "面要硬一点", ja: "麺は硬めで", romaji: "Men wa katame de" },
+      { zh: "面要软一点", ja: "麺は柔らかめで", romaji: "Men wa yawarakame de" },
+      { zh: "汤浓一点", ja: "スープ濃いめで", romaji: "Suupu koime de" },
+      { zh: "油少一点", ja: "油少なめで", romaji: "Abura sukuname de" },
+      { zh: "加叉烧", ja: "チャーシュー追加", romaji: "Chaashuu tsuika" },
+      { zh: "加溏心蛋", ja: "煮卵追加", romaji: "Nitamago tsuika" },
+      { zh: "加海苔", ja: "海苔追加", romaji: "Nori tsuika" }
+    ]},
+    { category: "天妇罗点餐", items: [
+      { zh: "天妇罗定食", ja: "天ぷら定食", romaji: "Tenpura teishoku" },
+      { zh: "天丼", ja: "天丼", romaji: "Tendon" },
+      { zh: "虾天妇罗", ja: "海老天", romaji: "Ebi ten" },
+      { zh: "蔬菜天妇罗", ja: "野菜天", romaji: "Yasai ten" },
+      { zh: "综合天妇罗", ja: "天ぷら盛り合わせ", romaji: "Tenpura moriawase" },
+      { zh: "天妇罗乌冬面", ja: "天ぷらうどん", romaji: "Tenpura udon" },
+      { zh: "天妇罗荞麦面", ja: "天ぷらそば", romaji: "Tenpura soba" },
+      { zh: "要酥脆的", ja: "サクサクでお願いします", romaji: "Sakusaku de onegaishimasu" }
+    ]},
+    { category: "寿司点餐", items: [
+      { zh: "寿司拼盘", ja: "寿司盛り合わせ", romaji: "Sushi moriawase" },
+      { zh: "金枪鱼", ja: "まぐろ", romaji: "Maguro" },
+      { zh: "三文鱼", ja: "サーモン", romaji: "Saamon" },
+      { zh: "海胆", ja: "うに", romaji: "Uni" },
+      { zh: "鱼子", ja: "いくら", romaji: "Ikura" },
+      { zh: "甜虾", ja: "甘エビ", romaji: "Amaebi" },
+      { zh: "鳗鱼", ja: "うなぎ", romaji: "Unagi" },
+      { zh: "玉子烧", ja: "玉子", romaji: "Tamago" },
+      { zh: "要芥末", ja: "わさび入りで", romaji: "Wasabi iri de" },
+      { zh: "不要芥末", ja: "わさび抜きで", romaji: "Wasabi nuki de" }
+    ]},
+    { category: "盖饭点餐", items: [
+      { zh: "海鲜盖饭", ja: "海鮮丼", romaji: "Kaisen don" },
+      { zh: "鳗鱼饭", ja: "うな丼", romaji: "Una don" },
+      { zh: "吻仔鱼盖饭", ja: "しらす丼", romaji: "Shirasu don" },
+      { zh: "牛肉盖饭", ja: "牛丼", romaji: "Gyuu don" },
+      { zh: "亲子丼", ja: "親子丼", romaji: "Oyako don" },
+      { zh: "炸猪排饭", ja: "カツ丼", romaji: "Katsu don" },
+      { zh: "大份", ja: "大盛り", romaji: "Oomori" },
+      { zh: "小份", ja: "小盛り", romaji: "Komori" }
+    ]},
+    { category: "特色美食", items: [
+      { zh: "味噌乌冬面", ja: "ほうとう", romaji: "Houtou" },
+      { zh: "人形烧", ja: "人形焼", romaji: "Ningyouyaki" },
+      { zh: "可丽饼", ja: "クレープ", romaji: "Kureepu" },
+      { zh: "团子", ja: "団子", romaji: "Dango" },
+      { zh: "抹茶冰淇淋", ja: "抹茶アイス", romaji: "Matcha aisu" },
+      { zh: "章鱼烧", ja: "たこ焼き", romaji: "Takoyaki" },
+      { zh: "大阪烧", ja: "お好み焼き", romaji: "Okonomiyaki" },
+      { zh: "烤鸡串", ja: "焼き鳥", romaji: "Yakitori" },
+      { zh: "和牛", ja: "和牛", romaji: "Wagyuu" },
+      { zh: "中华料理", ja: "中華料理", romaji: "Chuuka ryouri" }
+    ]},
     { category: "交通用语", items: [
       { zh: "这里怎么走？", ja: "ここはどう行きますか", romaji: "Koko wa dou ikimasu ka" },
       { zh: "请问XX站怎么走？", ja: "XX駅はどこですか", romaji: "XX eki wa doko desu ka" },
