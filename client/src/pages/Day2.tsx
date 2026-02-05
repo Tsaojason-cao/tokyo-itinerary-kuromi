@@ -725,7 +725,13 @@ export default function Day2() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 relative overflow-hidden">
+      <div className="fixed top-16 right-8 w-20 h-20 opacity-15 animate-float z-0 pointer-events-none">
+        <img src="/images/kuromi-cute.png" alt="" className="w-full h-full" />
+      </div>
+      <div className="fixed bottom-24 left-8 w-24 h-24 opacity-20 animate-float-delayed z-0 pointer-events-none">
+        <img src="/images/kuromi-sticker.png" alt="" className="w-full h-full" />
+      </div>
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-purple-200 sticky top-0 z-50">
         <div className="container py-4">

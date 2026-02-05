@@ -51,15 +51,26 @@ export default function Home() {
   const progress = (checkedSpots.size / 8) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 relative overflow-hidden">
+      {/* Kuromi floating decorations */}
+      <div className="fixed top-10 right-10 w-24 h-24 opacity-20 animate-float z-0 pointer-events-none">
+        <img src="/images/kuromi-cute.png" alt="" className="w-full h-full" />
+      </div>
+      <div className="fixed bottom-20 left-10 w-32 h-32 opacity-15 animate-float-delayed z-0 pointer-events-none">
+        <img src="/images/kuromi-sticker.png" alt="" className="w-full h-full" />
+      </div>
+      <div className="fixed top-1/3 left-1/4 w-20 h-20 opacity-10 animate-float-slow z-0 pointer-events-none">
+        <img src="/images/kuromi-cute.png" alt="" className="w-full h-full" />
+      </div>
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-purple-200 sticky top-0 z-50">
         <div className="container py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-purple-600 flex items-center gap-2">
-                <Heart className="w-8 h-8 fill-pink-400 text-pink-400" />
+                <img src="/images/kuromi-main.png" alt="Kuromi" className="w-10 h-10 rounded-full border-2 border-pink-300" />
                 东京浪漫之旅
+                <Heart className="w-6 h-6 fill-pink-400 text-pink-400 animate-pulse" />
               </h1>
               <p className="text-sm text-purple-600/70 mt-1">2/6 - 2/11 · 库洛米风格行程</p>
             </div>
