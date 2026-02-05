@@ -1,0 +1,21 @@
+{
+  "name": "东京浪漫之旅 - 库洛米风格行程",
+  "short_name": "东京行程",
+  "description": "2026年2月6-12日东京旅行详细行程规划",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#9333ea",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
