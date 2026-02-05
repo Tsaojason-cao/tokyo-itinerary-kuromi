@@ -22,13 +22,15 @@ import {
   Info,
   ExternalLink,
   Volume2,
-  Mountain,
-  Bus
+  Bus,
+  Snowflake
 } from "lucide-react";
 import { Link } from "wouter";
+import { VisualRouteMap } from "@/components/VisualRouteMap";
 
 export default function Day3() {
   const [checkedSpots, setCheckedSpots] = useState<Set<string>>(new Set());
+  const [language, setLanguage] = useState<'zh' | 'ja' | 'en'>('zh');
   
   const toggleSpot = (id: string) => {
     const newSet = new Set(checkedSpots);
@@ -48,467 +50,609 @@ export default function Day3() {
 
     window.speechSynthesis.cancel();
 
-    setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ja-JP';
-      utterance.rate = 0.8;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ja-JP';
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
 
-      const voices = window.speechSynthesis.getVoices();
-      const japaneseVoices = voices.filter(voice => voice.lang.startsWith('ja'));
-      
-      if (japaneseVoices.length > 0) {
-        utterance.voice = japaneseVoices[0];
-      }
+    const voices = window.speechSynthesis.getVoices();
+    const japaneseVoice = voices.find(voice => voice.lang.startsWith('ja'));
+    if (japaneseVoice) {
+      utterance.voice = japaneseVoice;
+    }
 
-      utterance.onerror = (event) => {
-        console.error('Speech synthesis error:', event);
-      };
-
-      try {
-        window.speechSynthesis.speak(utterance);
-      } catch (error) {
-        console.error('Failed to speak:', error);
-      }
-    }, 100);
+    window.speechSynthesis.speak(utterance);
   };
 
-  const openNavigation = (placeName: string, lat?: number, lng?: number) => {
-    if (lat && lng) {
-      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+  const handleNavigation = (lat: number, lng: number, placeName: string) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const currentLat = position.coords.latitude;
+          const currentLng = position.coords.longitude;
+          window.open(
+            `https://www.google.com/maps/dir/?api=1&origin=${currentLat},${currentLng}&destination=${lat},${lng}&travelmode=transit`,
+            '_blank'
+          );
+        },
+        () => {
+          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(placeName)}`, '_blank');
+        }
+      );
     } else {
       window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(placeName)}`, '_blank');
     }
   };
 
-  const progress = (checkedSpots.size / 7) * 100;
+  const progress = (checkedSpots.size / 8) * 100;
 
   const spots = [
     {
       id: "meeting-point",
-      title: "上野集合点",
-      titleJa: "上野集合点",
-      titleEn: "Ueno Meeting Point",
-      location: "上野站附近",
+      title: "集合地点",
+      titleJa: "集合場所",
+      titleEn: "Meeting Point",
+      location: "JR东京站新丸之内大楼",
       icon: "🚌",
-      time: "07:00-07:30",
-      lat: 35.7141,
-      lng: 139.7774,
-      history: "从酒店步行至上野站附近的旅游团集合点。提前15分钟到达，携带护照，穿好防寒衣物。",
-      special: "💡 建议前一晚准备好所有物品：护照、相机、充电宝、保暖衣物、零食和水。富士山五合目气温约-5℃！",
+      lat: 35.6812,
+      lng: 139.7671,
+      time: "出发前",
+      history: "JR东京站是东京最重要的交通枢纽之一，新丸之内大楼（新丸ビル）位于车站旁，是现代化的商业大楼。BEAMS是日本知名的时尚品牌，其标牌是常见的集合地标。",
+      special: "💡 集合地点：JR东京站前新丸之内大楼BEAMS标牌下。地址：日本〒100-6590 Tokyo, Chiyoda City, Marunouchi, 1-chome-5-1 新丸の内ビル。请提前10-15分钟到达，不要迟到！",
       photoTips: [
-        "出发前在酒店门口拍摄出发照，展示期待的心情",
-        "在旅游大巴前拍摄合影，记录旅程开始",
-        "车窗拍摄：在大巴上透过车窗拍摄沿途风景",
-        "自拍：在车上拍摄期待的表情和手势"
+        "出发前合影：在BEAMS标牌下拍摄出发前的纪念照",
+        "新丸之内大楼：拍摄现代化的建筑外观",
+        "东京站红砖建筑：如果时间充裕，可以拍摄附近的东京站红砖建筑",
+        "期待表情：拍摄充满期待的表情，准备开始富士山之旅",
+        "巴士前合影：上车前在巴士前拍照留念"
       ],
-      food: ["便利店早餐", "车上零食"],
       femalePoses: [
-        "【出发姿势】站在大巴前，一手拿着行李包，一手做加油手势，表情兴奋",
-        "【车窗自拍】坐在车上，脸贴近车窗，用手机自拍，背景是窗外风景",
-        "【期待表情】双手合十放在胸前，做祈祷状，表情期待又兴奋",
-        "【比心姿势】对着镜头比心，背景是旅游大巴",
-        "【闭眼休息】在车上闭眼休息，侧脸对镜头，营造安静美好的氛围"
+        "【期待姿势】双手合十放在脸颊旁，做期待的表情，展示对富士山之旅的期待",
+        "【指向标牌】一手指向BEAMS标牌，另一手做V字手势，开心微笑",
+        "【背包客风格】背着背包，一手拿着地图或手机，做准备出发的姿势",
+        "【建筑前站姿】站在新丸之内大楼前，双脚交叉，一手插口袋，自然微笑",
+        "【回眸姿势】背对镜头准备上车，回头看镜头，露出期待的笑容"
       ],
       couplePoses: [
-        "【出发合影】两人站在大巴前，女生跳起来，男生在旁边笑",
-        "【车上依偎】女生靠在男生肩上，两人看向窗外",
-        "【比心互动】两人一起对镜头比心，表情开心",
-        "【喂食互动】女生喂男生吃零食，男生做要吃的动作",
-        "【牵手期待】两人牵手，看向前方，充满期待"
+        "【一起看地图】两人一起看手机上的行程，头部靠近，讨论今天的计划",
+        "【牵手出发】牵手站在BEAMS标牌下，准备开始旅程",
+        "【背包互助】男生帮女生整理背包，温馨互动",
+        "【期待拥抱】女生从背后抱住男生，两人都做期待的表情",
+        "【巴士前合影】在巴士前牵手合影，展示即将开始的旅程"
+      ],
+      food: ["新丸之内大楼内餐厅", "东京站便当店"],
+      tips: [
+        "请提前10-15分钟到达集合地点",
+        "携带保暖衣物（富士山地区较冷）",
+        "准备相机和手机（多个拍照点）",
+        "带上现金（部分地方可能不支持信用卡）",
+        "如计划泡温泉，建议自备毛巾"
       ]
     },
     {
-      id: "fuji-5th-station",
-      title: "富士山五合目",
-      titleJa: "富士山五合目",
-      titleEn: "Mt. Fuji 5th Station",
-      location: "海拔2,305米",
-      icon: "🗻",
-      time: "10:00-12:00",
-      lat: 35.3606,
-      lng: 138.7278,
-      history: "富士山五合目位于海拔2,305米，是普通游客可以轻松到达的最高点。这里设有展望台、神社、餐厅和纪念品商店。天气晴朗时，可以俯瞰山梨县和静冈县的壮丽景色。",
-      special: "💡 气温约-5℃，务必穿戴保暖衣物！可能会有轻微高原反应，注意慢慢行动。五合目邮局可以寄明信片，盖富士山纪念章！",
+      id: "saiko-ice-festival",
+      title: "西湖冰之祭典",
+      titleJa: "西湖氷の祭典",
+      titleEn: "Saiko Ice Festival",
+      location: "西湖野鸟森公园",
+      icon: "❄️",
+      lat: 35.4833,
+      lng: 138.6333,
+      time: "11:30-14:00",
+      history: "西湖冰之祭典是富士五湖地区冬季限定的冰雕艺术节，每年1月下旬至2月中旬举办。西湖是富士五湖中最小的湖泊，但以其宁静的氛围和绝佳的富士山观景角度而闻名。冰之祭典展示各种精美的冰雕作品，在夜晚点灯后更加梦幻。",
+      special: "💡 2月8日前往西湖冰之祭典（西湖野鸟森公园）！冬季限定活动，可以看到精美的冰雕艺术和富士山背景。自助游览1小时，建议穿防滑保暖的鞋子。",
       photoTips: [
-        "展望台全景：站在展望台拍摄富士山山顶和云海全景",
-        "雪景特写：拍摄积雪、冰柱等冬季特有的雪景细节",
-        "神社鸟居：以富士山神社的红色鸟居为前景，富士山为背景",
-        "云海俯瞰：如果天气好，可以拍摄脚下的云海和远处的山脉",
-        "纪念碑合影：在五合目标志碑前拍摄纪念照"
+        "冰雕特写：拍摄精美的冰雕作品，利用自然光展现冰的质感",
+        "富士山背景：以富士山为背景，拍摄冰雕和雪山的组合",
+        "冰雕人像：站在大型冰雕旁，展示冰雕的规模和细节",
+        "互动照片：假装触摸或拥抱冰雕，创造有趣的互动画面",
+        "全景照片：拍摄整个冰之祭典会场，展示冰雕群和富士山"
       ],
-      food: ["五合目餐厅日式定食", "热红豆汤", "富士山限定零食"],
       femalePoses: [
-        "【张开双臂】站在展望台，张开双臂拥抱富士山，表情兴奋",
-        "【雪景互动】蹲下触摸雪地，回头看镜头，表情惊喜",
-        "【鸟居前祈福】站在神社鸟居前，双手合十祈祷，侧面拍摄",
-        "【云海眺望】站在栏杆前，一手扶栏杆，眺望远方云海，侧脸拍摄",
-        "【雪地天使】躺在雪地上做雪天使动作，从上方俯拍"
+        "【冰雕旁站姿】站在精美冰雕旁，一手轻触冰雕，侧身45度看镜头，展示冰雕细节",
+        "【雪地姿势】在雪地上蹲下或坐下，双手捧雪，做开心的表情",
+        "【富士山背景】背对富士山站立，回头看镜头，展示富士山和冰雕的组合",
+        "【保暖风格】戴着毛线帽和围巾，双手捧热饮，展示冬日温暖感",
+        "【跳跃姿势】在冰雕前跳跃，拍摄动态照片，展示活力"
       ],
       couplePoses: [
-        "【背后拥抱】男生从背后环抱女生，两人一起看向富士山",
-        "【雪球互动】两人一起堆雪球或打雪仗，抓拍欢乐瞬间",
-        "【牵手眺望】两人牵手站在展望台，背影拍摄，背景是富士山",
-        "【额头相抵】两人额头相抵，闭眼微笑，雪景为背景",
-        "【跳跃合影】两人一起跳起来，抓拍在空中的瞬间，背景是富士山"
+        "【冰雕前拥抱】在大型冰雕前拥抱，展示浪漫氛围",
+        "【共赏冰雕】两人并排站立，一起欣赏冰雕，从侧面拍摄",
+        "【打雪仗】假装打雪仗，拍摄有趣的互动画面",
+        "【背靠背】背靠背站在冰雕前，展示默契",
+        "【牵手漫步】在冰雕群中牵手漫步，从背后拍摄"
+      ],
+      food: ["会场小吃摊位", "热饮（咖啡、热可可）", "烤红薯"],
+      tips: [
+        "穿防滑保暖的鞋子（地面可能结冰）",
+        "戴手套和帽子（气温较低）",
+        "相机电池注意保暖（低温会影响电池续航）",
+        "建议购买热饮保暖",
+        "注意冰雕周围的安全提示"
       ]
     },
     {
-      id: "oshino-hakkai",
-      title: "忍野八海",
-      titleJa: "忍野八海",
-      titleEn: "Oshino Hakkai",
-      location: "富士山融雪清泉",
-      icon: "💧",
-      time: "12:00-13:30",
-      lat: 35.4567,
-      lng: 138.8447,
-      history: "忍野八海是富士山融雪形成的8个清澈见底的池塘，被称为'日本九寨沟'。这些池塘水质极佳，透明度高，可以清晰看到池底的水草和游鱼。周围保留着传统的茅草屋建筑，充满日式田园风情。",
-      special: "💡 池水常年保持12-13℃，清澈见底！可以在这里品尝富士山泉水，还可以买到用泉水制作的豆腐和荞麦面。",
-      photoTips: [
-        "池塘倒影：拍摄清澈池水中的富士山倒影（天气好时）",
-        "茅草屋背景：以传统茅草屋为背景拍摄日式田园风光",
-        "水中游鱼：近距离拍摄池中清晰可见的锦鲤和水草",
-        "小桥流水：拍摄石桥、水车等传统日式景观元素",
-        "雪景村落：冬季可以拍摄雪中的茅草屋和池塘"
-      ],
-      food: ["忍野八海豆腐", "荞麦面", "富士山泉水", "日式定食（团餐）"],
-      femalePoses: [
-        "【池边蹲姿】蹲在池塘边，一手轻触水面，回头看镜头",
-        "【茅草屋前】站在传统茅草屋前，双手放在身后，微微侧身",
-        "【小桥上】站在石桥中央，一手扶栏杆，另一手轻提衣角",
-        "【喂鱼姿势】蹲下喂池中的锦鲤，侧面拍摄",
-        "【眺望富士山】站在池边，一手遮阳眺望远处的富士山"
-      ],
-      couplePoses: [
-        "【池边并坐】两人并排坐在池边，脚悬在水面上方，背影拍摄",
-        "【小桥牵手】两人牵手走在小桥上，从侧面或背后拍摄",
-        "【茅草屋前合影】两人站在茅草屋前，女生靠在男生肩上",
-        "【喂鱼互动】两人一起蹲下喂鱼，头部靠近",
-        "【倒影合影】两人站在池边，拍摄倒影和真人同框的画面"
-      ]
-    },
-    {
-      id: "kawaguchiko",
-      title: "河口湖",
-      titleJa: "河口湖",
-      titleEn: "Lake Kawaguchi",
-      location: "富士五湖之一",
-      icon: "🌊",
-      time: "13:30-17:00",
-      lat: 35.5131,
+      id: "lawson-fuji",
+      title: "罗森富士河口湖町役场前店",
+      titleJa: "ローソン富士河口湖町役場前店",
+      titleEn: "Lawson Fujikawaguchiko Town Hall",
+      location: "富士河口湖町船津",
+      icon: "🏪",
+      lat: 35.5003,
       lng: 138.7644,
-      history: "河口湖是富士五湖中最北的一个，也是观赏富士山的最佳地点之一。湖面海拔830米，周长约20公里。湖畔有许多温泉旅馆、咖啡厅和美术馆，是富士山地区最受欢迎的旅游目的地。",
-      special: "💡 经典机位：湖畔栏杆处可以拍到富士山倒影！红色鸟居（产屋崎神社）是网红打卡点，可以拍到鸟居、湖水、富士山三者同框的经典照片。",
+      time: "15:30-15:50",
+      history: "这家罗森便利店因其绝佳的富士山拍摄角度而成为网红打卡点。店铺位于富士河口湖町役场（町政府）前，招牌为深蓝色的罗森标志。相比河口湖站前的罗森，这里人少、空地多、更安全，成为摄影爱好者的首选机位。",
+      special: "💡 网红富士山拍摄机位！罗森深蓝色招牌+富士山的经典组合。地址：日本山梨县南都留郡富士河口湖町船津1395-1。步行到河口湖站约15分钟。",
       photoTips: [
-        "湖畔倒影：在湖边拍摄富士山在湖面的倒影（无风时最佳）",
-        "红色鸟居：拍摄产屋崎神社的红色鸟居与富士山同框",
-        "湖畔栏杆：站在湖畔栏杆前，以富士山为背景拍摄人像",
-        "咖啡厅窗景：在湖畔咖啡厅透过窗户拍摄富士山",
-        "日落时分：傍晚时拍摄富士山剪影和晚霞"
+        "经典机位：站在便利店前，以罗森招牌和富士山为背景拍摄",
+        "低角度拍摄：蹲下拍摄，让富士山显得更加雄伟",
+        "招牌特写：拍摄罗森深蓝色招牌和富士山的组合",
+        "便利店内：在店内透过玻璃拍摄富士山",
+        "创意构图：利用便利店的线条和富士山构图"
       ],
-      food: ["湖畔咖啡厅下午茶", "富士山特色甜品", "温泉旅馆料理"],
       femalePoses: [
-        "【湖畔眺望】站在湖边，侧身眺望富士山，一手轻放胸前",
-        "【鸟居前祈福】站在红色鸟居下，双手合十，仰望富士山",
-        "【栏杆倚靠】倚靠在湖畔栏杆上，回头看镜头，富士山在背景",
-        "【咖啡厅窗边】坐在咖啡厅窗边，手捧咖啡杯，窗外是富士山",
-        "【湖边漫步】在湖边小路上漫步，背影拍摄，富士山在远处"
+        "【经典站姿】站在罗森招牌下，一手做V字手势，另一手指向富士山，开心微笑",
+        "【便利店前】假装刚从便利店出来，手里拿着饮料或零食，自然行走",
+        "【坐姿拍摄】坐在便利店前的台阶或空地上，腿部交叉，背景是富士山",
+        "【跳跃姿势】在便利店前跳跃，拍摄动态照片，背景是富士山和罗森招牌",
+        "【回眸杀】背对富士山和罗森招牌，回头看镜头，展示侧脸"
       ],
       couplePoses: [
-        "【湖边拥抱】男生从背后环抱女生，两人一起看向富士山和湖面",
-        "【鸟居下合影】两人站在红色鸟居下，牵手或拥抱，富士山为背景",
-        "【栏杆前依偎】女生靠在男生肩上，两人倚靠栏杆，侧面拍摄",
-        "【咖啡厅约会】两人坐在咖啡厅内，面对面聊天，窗外是富士山",
-        "【湖边牵手】两人牵手在湖边漫步，背影拍摄，夕阳和富士山在背景"
+        "【便利店前合影】两人站在罗森招牌下，牵手或拥抱，背景是富士山",
+        "【分享零食】两人一起分享从便利店买的零食，自然互动",
+        "【指向富士山】两人一起指向富士山，做惊喜的表情",
+        "【坐姿合影】两人坐在便利店前，靠在一起，背景是富士山",
+        "【亲吻瞬间】男生亲吻女生额头或脸颊，背景是罗森招牌和富士山"
+      ],
+      food: ["罗森便利店（饮料、零食、便当）"],
+      tips: [
+        "这里是网红打卡点，可能需要排队拍照",
+        "建议在便利店购买饮料和零食",
+        "注意不要影响便利店的正常营业",
+        "最佳拍摄时间是下午阳光充足时",
+        "可以在便利店内购买富士山限定商品"
+      ]
+    },
+    {
+      id: "hikawa-clock-shop",
+      title: "日川时计街",
+      titleJa: "日川時計街",
+      titleEn: "Hikawa Clock Shop Street",
+      location: "富士吉田市",
+      icon: "🏘️",
+      lat: 35.4869,
+      lng: 138.8103,
+      time: "16:10-16:50",
+      history: "日川时计街被称为通往富士山的天梯小镇，是一条安静的街道，笔直地通向富士山。站在街道上，仿佛沿着一条云梯无限接近富士山，却又触不可及。这里远离都市喧嚣，保留着传统的日本小镇风情，是摄影和散步的绝佳地点。",
+      special: "💡 富士山天梯小镇！安静的街道像一条云梯，路的尽头仿佛就是富士山，无限接近却触不可及。逃离都市喧嚣的绝佳地点，非常适合拍摄文艺照片。",
+      photoTips: [
+        "天梯视角：站在街道中央，拍摄笔直通向富士山的街道",
+        "透视构图：利用街道的透视线条，让富士山成为视觉焦点",
+        "人物剪影：在街道上拍摄人物剪影，背景是富士山",
+        "街道两侧：拍摄传统日本建筑和富士山的组合",
+        "低角度拍摄：从低角度拍摄街道和富士山，增强透视感"
+      ],
+      femalePoses: [
+        "【街道中央】站在街道中央，双脚前后交叉，一手轻提裙摆或衣角，面向富士山",
+        "【行走姿势】在街道上自然行走，回头看镜头，背景是富士山",
+        "【坐姿拍摄】坐在街道旁的台阶上，腿部交叉，远眺富士山",
+        "【伸手姿势】伸手做触摸富士山的姿势，创造触不可及的意境",
+        "【背影杀】背对镜头站在街道上，面向富士山，展示背影和街道的透视感"
+      ],
+      couplePoses: [
+        "【牵手漫步】两人牵手在街道上漫步，从背后拍摄，背景是富士山",
+        "【对视互动】两人面对面站在街道中央，深情对视，背景是富士山",
+        "【拥抱姿势】在街道上拥抱，从侧面拍摄，展示富士山背景",
+        "【坐姿合影】两人坐在街道旁，靠在一起，远眺富士山",
+        "【指向富士山】两人一起指向富士山，做惊叹的表情"
+      ],
+      food: ["附近小店", "传统日式茶馆"],
+      tips: [
+        "注意来往车辆，拍照时注意安全",
+        "最佳拍摄时间是下午阳光充足时",
+        "建议穿着文艺风格的服装",
+        "可以在街道两侧探索传统商店",
+        "保持安静，尊重当地居民"
+      ]
+    },
+    {
+      id: "fujiyama-onsen",
+      title: "富士山 Fujiyama 温泉",
+      titleJa: "ふじやま温泉",
+      titleEn: "Fujiyama Onsen",
+      location: "富士吉田市",
+      icon: "♨️",
+      lat: 35.4625,
+      lng: 138.7806,
+      time: "17:20-18:50",
+      history: "Fujiyama温泉（ふじやま温泉）是富士山地区著名的温泉设施，以其绝佳的富士山观景视角而闻名。在温泉中浸泡热汤，远方雪顶的富士山倒映在湖面，寒冬也变得温暖而柔和。温泉水质优良，具有美肌和放松效果。",
+      special: "💡 可选活动：富士吉田小镇自由用餐 或 FUJIYAMA温泉体验。温泉不含晚餐、入浴费用和毛巾费用，需自费。在温泉中远眺富士山，是难得的体验！",
+      photoTips: [
+        "温泉外观：拍摄温泉设施的外观和富士山背景",
+        "休息区：在休息区拍摄放松的照片",
+        "富士山观景：从温泉观景台拍摄富士山",
+        "美食照片：如果选择用餐，拍摄当地美食",
+        "夜景：傍晚时分拍摄温泉和富士山的夜景"
+      ],
+      femalePoses: [
+        "【浴衣姿势】穿着浴衣在休息区，一手拿着饮料，自然放松的姿势",
+        "【观景台】站在观景台，背对富士山，回头看镜头",
+        "【放松表情】坐在休息区，做放松舒适的表情，展示温泉体验",
+        "【美食照】拍摄享用当地美食的照片，表情满足",
+        "【夜景人像】在傍晚时分，以富士山夜景为背景拍摄人像"
+      ],
+      couplePoses: [
+        "【浴衣合影】两人穿着浴衣在休息区合影",
+        "【观景台合影】两人在观景台，背对富士山，牵手或拥抱",
+        "【共享美食】两人一起享用美食，自然互动",
+        "【放松时刻】两人坐在休息区，靠在一起，展示放松的氛围",
+        "【夜景合影】在傍晚时分，以富士山夜景为背景合影"
+      ],
+      food: ["富士吉田小镇餐厅", "温泉内食堂", "当地特色料理"],
+      tips: [
+        "温泉入浴费用需自费（约800-1500日元）",
+        "建议自备毛巾（租赁需额外费用）",
+        "温泉内禁止拍照（尊重他人隐私）",
+        "如果不泡温泉，可以选择在富士吉田小镇用餐",
+        "注意时间，不要错过集合时间"
+      ]
+    },
+    {
+      id: "oike-park-fireworks",
+      title: "大池公园 - 河口湖冬花火大会",
+      titleJa: "大池公園 - 河口湖冬花火大会",
+      titleEn: "Oike Park - Kawaguchiko Winter Fireworks",
+      location: "河口湖大池公园",
+      icon: "🎆",
+      lat: 35.5056,
+      lng: 138.7542,
+      time: "19:30-20:30",
+      history: "河口湖冬花火大会是山梨县人气排名第1位的花火大会，每年冬季在河口湖畔举办。大池公园是主会场，可以欣赏到约3000发烟火在富士山背景下绽放的壮观景象。花火倒映在河口湖面，与雪顶富士山形成绝美画面。",
+      special: "💡 山梨人气第1位的花火大会！20:00-20:20为冬花火燃放时间。大池公园是主会场，可以拍摄烟火、湖面倒影和富士山的三重美景。建议提前占位！",
+      photoTips: [
+        "烟火特写：使用长曝光拍摄烟火的轨迹",
+        "湖面倒影：拍摄烟火在湖面的倒影",
+        "富士山背景：以富士山为背景，拍摄烟火绽放的瞬间",
+        "人物剪影：拍摄观赏烟火的人物剪影",
+        "全景照片：拍摄整个会场和烟火的全景"
+      ],
+      femalePoses: [
+        "【观赏姿势】站在湖边，仰头观赏烟火，拍摄侧脸剪影",
+        "【欢呼姿势】双手举起做欢呼状，背景是绽放的烟火",
+        "【许愿姿势】双手合十做许愿状，背景是烟火",
+        "【回眸姿势】背对烟火，回头看镜头，烟火在背景中绽放",
+        "【坐姿观赏】坐在湖边，腿部交叉，观赏烟火"
+      ],
+      couplePoses: [
+        "【拥抱观赏】两人拥抱在一起观赏烟火，从背后拍摄剪影",
+        "【牵手观赏】两人牵手站在湖边，仰头观赏烟火",
+        "【亲吻瞬间】在烟火绽放的瞬间亲吻，拍摄浪漫画面",
+        "【坐姿合影】两人坐在湖边，靠在一起，背景是烟火和富士山",
+        "【指向烟火】两人一起指向绽放的烟火，做惊叹的表情"
+      ],
+      food: ["会场小吃摊位", "热饮", "章鱼烧", "烤鱿鱼"],
+      tips: [
+        "烟火时间：20:00-20:20（准时开始）",
+        "建议19:00-19:30到达占位",
+        "穿保暖衣物（夜晚湖边较冷）",
+        "带上三脚架（如果要拍摄烟火）",
+        "注意人群安全，不要拥挤"
       ]
     },
     {
       id: "return-bus",
-      title: "返回东京",
-      titleJa: "東京へ戻る",
-      titleEn: "Return to Tokyo",
-      location: "旅游大巴",
+      title: "返程巴士",
+      titleJa: "帰りのバス",
+      titleEn: "Return Bus",
+      location: "返回东京",
       icon: "🚌",
-      time: "17:00-19:30",
-      history: "乘坐旅游大巴返回东京上野。在车上可以休息，整理照片，回味一天的美好时光。",
-      special: "💡 在车上可以整理今天拍的照片，挑选最喜欢的发朋友圈！如果累了就睡一觉，到上野后还有精力去吃晚饭。",
+      lat: 35.6812,
+      lng: 139.7671,
+      time: "20:30-23:00",
+      history: "从河口湖地区返回东京站，车程约2小时。巴士会沿着中央自动车道返回，夜晚可以欣赏沿途的灯光和夜景。",
+      special: "💡 返程时间仅供参考，可能因行程顺利、路况良好等原因提早返程。实际抵达解散地的时间会根据路况有所变动。为避免损失，请不要安排当天晚上的其他活动！",
       photoTips: [
-        "车窗夕阳：透过车窗拍摄夕阳和远处的富士山",
-        "整理照片：拍摄自己在车上看照片的画面",
-        "疲惫休息：拍摄在车上休息的自然状态",
-        "回程自拍：在车上自拍，展示满足的表情"
+        "巴士内：拍摄巴士内的氛围和同行的伙伴",
+        "窗外夜景：拍摄窗外的夜景和灯光",
+        "疲惫但满足：拍摄疲惫但满足的表情",
+        "回顾照片：在巴士上回顾今天拍摄的照片",
+        "东京夜景：快到东京时拍摄城市夜景"
       ],
-      food: ["车上零食", "矿泉水"],
       femalePoses: [
-        "【车窗眺望】看向车窗外，侧脸拍摄，表情满足",
-        "【整理照片】低头看手机中的照片，微笑",
-        "【闭眼休息】靠在座位上闭眼休息，表情安详",
-        "【自拍微笑】举起手机自拍，做胜利手势",
-        "【回味表情】托腮看向窗外，表情回味无穷"
+        "【巴士内自拍】在巴士座位上自拍，做疲惫但满足的表情",
+        "【看窗外】侧脸看向窗外，拍摄思考或回味的表情",
+        "【回顾照片】看手机上今天拍的照片，做开心的表情",
+        "【休息姿势】靠在座位上休息，拍摄放松的姿势",
+        "【比心姿势】对着镜头做爱心手势，感谢美好的一天"
       ],
       couplePoses: [
-        "【肩膀依偎】女生靠在男生肩上休息，男生看向窗外",
-        "【一起看照片】两人一起看手机中的照片，头靠在一起",
-        "【牵手休息】两人牵手，闭眼休息",
-        "【分享零食】女生喂男生吃零食，温馨互动",
-        "【车窗合影】两人一起看向车窗外，侧面拍摄"
+        "【靠肩休息】女生靠在男生肩上休息，温馨画面",
+        "【牵手休息】两人牵手休息，拍摄手部特写",
+        "【回顾照片】两人一起看手机上的照片，头部靠近",
+        "【窗外夜景】两人一起看窗外夜景，从侧面拍摄",
+        "【疲惫合影】两人做疲惫但开心的表情，纪念充实的一天"
+      ],
+      food: ["巴士上可以吃自备的零食和饮料"],
+      tips: [
+        "上车前去洗手间（车程约2小时）",
+        "准备一些零食和水在车上吃",
+        "可以在车上休息或整理照片",
+        "注意个人物品，不要遗漏在车上",
+        "到达东京站后，注意交通方式回酒店"
       ]
     },
     {
-      id: "ueno-return",
-      title: "抵达上野",
-      titleJa: "上野到着",
-      titleEn: "Arrive at Ueno",
-      location: "上野集合点",
+      id: "arrival-tokyo",
+      title: "抵达东京站",
+      titleJa: "東京駅到着",
+      titleEn: "Arrival at Tokyo Station",
+      location: "JR东京站",
       icon: "🏁",
-      time: "19:30-20:00",
-      history: "抵达上野集合点，结束一天的富士山之旅。可以在附近的阿美横丁或松坂屋解决晚餐，购买伴手礼。",
-      special: "💡 推荐在阿美横丁吃晚饭，有很多平价美食选择。如果还有精力，可以去松坂屋百货逛逛，或者直接回酒店休息。",
+      lat: 35.6812,
+      lng: 139.7671,
+      time: "约23:00",
+      history: "JR东京站是东京最重要的交通枢纽，连接多条JR线路和地铁线路。从这里可以方便地前往东京各个地区。",
+      special: "💡 预计23:00左右抵达东京站新丸之内大楼BEAMS标牌下（解散地点）。实际时间可能因路况有所变动。解散后请尽快返回酒店休息，准备明天的行程！",
       photoTips: [
-        "抵达合影：在集合点拍摄抵达后的合影",
-        "阿美横丁夜景：拍摄热闹的阿美横丁夜市",
-        "晚餐美食：拍摄晚餐的美食照片",
-        "回酒店路上：拍摄回酒店路上的街景"
+        "东京站夜景：拍摄东京站的夜景和灯光",
+        "解散合影：在解散地点拍摄合影，纪念今天的旅程",
+        "疲惫归来：拍摄疲惫但满足的表情",
+        "红砖建筑：拍摄东京站标志性的红砖建筑夜景",
+        "再见富士山：回顾今天的照片，告别富士山"
       ],
-      food: ["阿美横丁拉面", "居酒屋料理", "松坂屋美食街"],
       femalePoses: [
-        "【抵达姿势】站在集合点，做胜利手势，表情满足",
-        "【夜市背景】站在阿美横丁的灯笼下，拍摄夜景人像",
-        "【美食照】拿着美食，做要吃的表情",
-        "【疲惫满足】坐在餐厅里，表情疲惫但满足",
-        "【回酒店】走在回酒店的路上，背影拍摄"
+        "【归来姿势】站在东京站前，做疲惫但满足的表情，展示充实的一天",
+        "【挥手告别】对着镜头挥手，告别富士山之旅",
+        "【东京站前】站在东京站红砖建筑前，拍摄夜景人像",
+        "【回顾照片】看手机上今天的照片，做满足的表情",
+        "【期待明天】做期待的表情，准备明天的新行程"
       ],
       couplePoses: [
-        "【抵达合影】两人在集合点拍合影，做胜利手势",
-        "【夜市漫步】两人牵手在阿美横丁漫步，背影拍摄",
-        "【共享美食】两人一起吃晚餐，分享美食",
-        "【疲惫依偎】在餐厅里，女生靠在男生肩上，表情疲惫但幸福",
-        "【回酒店路上】两人牵手走在回酒店的路上，背影拍摄"
-      ]
-    },
-    {
-      id: "hotel-rest",
-      title: "回酒店休息",
-      titleJa: "ホテルで休憩",
-      titleEn: "Rest at Hotel",
-      location: "上野APA酒店",
-      icon: "🏨",
-      time: "20:00-",
-      history: "回到酒店，洗个热水澡，整理今天的照片和视频，为明天的镰仓之旅做准备。",
-      special: "💡 记得给手机和相机充电！可以在便利店买好明天的早餐和饮料。如果有需要洗的衣服，可以使用酒店的洗衣机。",
-      photoTips: [
-        "酒店房间：拍摄酒店房间的舒适环境",
-        "整理照片：拍摄自己在床上整理照片的画面",
-        "泡澡放松：拍摄浴室和泡澡的场景（注意隐私）",
-        "晚安自拍：睡前自拍，展示满足的表情"
+        "【归来合影】两人在东京站前合影，做疲惫但开心的表情",
+        "【拥抱告别】拥抱在一起，纪念美好的一天",
+        "【牵手归来】牵手站在东京站前，展示默契",
+        "【回顾照片】两人一起看今天的照片，头部靠近",
+        "【期待明天】两人做期待的表情，准备明天的新冒险"
       ],
-      food: ["便利店夜宵", "酒店客房服务"],
-      femalePoses: [
-        "【床上放松】躺在床上，举起手机看照片，表情满足",
-        "【整理行李】坐在床边整理行李，侧面拍摄",
-        "【泡澡放松】在浴缸边拍摄泡澡的脚或手（注意隐私）",
-        "【晚安自拍】躺在床上自拍，做晚安手势",
-        "【窗边夜景】站在窗边看夜景，背影拍摄"
-      ],
-      couplePoses: [
-        "【床上依偎】两人躺在床上，一起看手机中的照片",
-        "【整理照片】两人坐在床上，一起整理今天的照片",
-        "【泡脚放松】两人一起泡脚，拍摄脚部特写",
-        "【晚安合影】两人在床上自拍，做晚安手势",
-        "【窗边拥抱】站在窗边拥抱，看向窗外夜景，背影拍摄"
+      food: ["东京站内便当店（如果饿了可以买夜宵）"],
+      tips: [
+        "注意个人物品，不要遗漏",
+        "记下回酒店的交通方式",
+        "如果太晚，可以考虑打车回酒店",
+        "尽快回酒店休息，准备明天的行程",
+        "可以在东京站购买明天的早餐或零食"
       ]
     }
   ];
 
-  const routeSteps = [
-    { from: "上野APA酒店", to: "上野集合点", method: "步行", time: "5-10分钟", icon: "🚶" },
-    { from: "上野集合点", to: "富士山五合目", method: "旅游大巴", time: "2.5小时", icon: "🚌" },
-    { from: "富士山五合目", to: "忍野八海", method: "旅游大巴", time: "30分钟", icon: "🚌" },
-    { from: "忍野八海", to: "河口湖", method: "旅游大巴", time: "20分钟", icon: "🚌" },
-    { from: "河口湖", to: "上野集合点", method: "旅游大巴", time: "2.5小时", icon: "🚌" },
-    { from: "上野集合点", to: "上野APA酒店", method: "步行", time: "5-10分钟", icon: "🚶" }
+  const subwayRoutes = [
+    {
+      from: "上野站",
+      to: "东京站",
+      line: "JR山手线",
+      time: "10分钟",
+      fare: "160日元",
+      color: "bg-green-500",
+      steps: [
+        "从上野站乘坐JR山手线（内环方向）",
+        "2站后在东京站下车",
+        "前往新丸之内大楼BEAMS标牌下集合"
+      ]
+    },
+    {
+      from: "东京站",
+      to: "富士山地区",
+      line: "旅游巴士",
+      time: "约2.5小时",
+      fare: "已包含",
+      color: "bg-blue-500",
+      steps: [
+        "在BEAMS标牌下集合",
+        "乘坐旅游巴士前往富士山地区",
+        "第一站：西湖冰之祭典"
+      ]
+    },
+    {
+      from: "富士山地区",
+      to: "东京站",
+      line: "旅游巴士",
+      time: "约2小时",
+      fare: "已包含",
+      color: "bg-blue-500",
+      steps: [
+        "20:30从河口湖地区出发",
+        "乘坐旅游巴士返回东京",
+        "约23:00抵达东京站新丸之内大楼"
+      ]
+    },
+    {
+      from: "东京站",
+      to: "上野站",
+      line: "JR山手线",
+      time: "10分钟",
+      fare: "160日元",
+      color: "bg-green-500",
+      steps: [
+        "从东京站乘坐JR山手线（外环方向）",
+        "2站后在上野站下车",
+        "返回酒店休息"
+      ]
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100">
-      {/* 顶部导航栏 */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b-2 border-pink-200 shadow-sm">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Heart className="w-6 h-6 text-pink-500 fill-pink-500" />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 pb-20">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 text-white p-6 shadow-lg">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-4">
+            <Link href="/">
+              <Button variant="ghost" className="text-white hover:bg-white/20">
+                <Heart className="mr-2 h-4 w-4" />
                 东京浪漫之旅
-              </h1>
-            </div>
-            <p className="text-sm text-gray-600">2/6 - 2/11 · 库洛米风格行程</p>
+              </Button>
+            </Link>
+            <Badge variant="secondary" className="text-lg px-4 py-2">
+              2/6 - 2/11 · 库洛米风格行程
+            </Badge>
           </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        {/* 日期标题 */}
-        <div className="text-center mb-8">
-          <Badge variant="outline" className="mb-4 text-lg px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none">
-            <Mountain className="w-5 h-5 mr-2" />
+          <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
+            <Snowflake className="h-10 w-10" />
             第3天
-          </Badge>
-          <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            富士山一日游
-          </h2>
-          <p className="text-gray-600 text-lg">
-            <JapaneseText zh="2月8日（周日）" ja="2月8日（日曜日）" en="Feb 8 (Sun)" />
-          </p>
-          <p className="text-purple-600 font-medium mt-2">
-            富士山五合目 → 忍野八海 → 河口湖
-          </p>
+          </h1>
+          <p className="text-xl opacity-90">富士山一日游 · 冬季限定体验</p>
+          <p className="text-sm opacity-75 mt-2">2月8日 · 西湖冰之祭典 · 罗森网红机位 · 河口湖冬花火</p>
         </div>
+      </div>
 
-        {/* 今日完成度 */}
-        <Card className="mb-6 border-2 border-pink-200 bg-white/80 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-pink-600">
-              <CheckCircle2 className="w-5 h-5" />
+      <div className="max-w-4xl mx-auto p-4 space-y-6">
+        {/* Progress Card */}
+        <Card className="border-2 border-purple-200 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100">
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle2 className="h-6 w-6 text-purple-600" />
               今日完成度
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-gray-600">
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm text-gray-600">
                 <span>已完成 {checkedSpots.size} / {spots.length} 个打卡点</span>
-                <span>{Math.round(progress)}%</span>
+                <span className="font-bold text-purple-600">{Math.round(progress)}%</span>
               </div>
               <Progress value={progress} className="h-3" />
             </div>
           </CardContent>
         </Card>
 
-        {/* 天气和重要提醒 */}
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <Card className="border-2 border-blue-200 bg-white/80 backdrop-blur">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-600">
-                <Cloud className="w-5 h-5" />
-                2月8日天气
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold text-blue-600">8°C</div>
-                <p className="text-gray-600">晴天（富士山五合目约-5℃）</p>
-                <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                  <div>💧 湿度: 45%</div>
-                  <div>🌬️ 风速: 4m/s</div>
-                </div>
-                <p className="text-purple-600 font-medium mt-2">建议穿搭：羽绒服+保暖内衣+围巾+手套</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-yellow-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-orange-600">
-                <AlertCircle className="w-5 h-5" />
-                重要提醒
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2 text-sm">
-              <div className="flex items-start gap-2">
-                <span className="text-orange-500">●</span>
-                <span><strong>07:00出发</strong> - 提前15分钟到达集合点</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-orange-500">●</span>
-                <span><strong>携带护照</strong> - 部分景点需要出示</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-orange-500">●</span>
-                <span><strong>防寒保暖</strong> - 五合目气温约-5℃</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-orange-500">●</span>
-                <span><strong>高原反应</strong> - 慢慢行动，不要剧烈运动</span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* 今日亮点 */}
-        <Card className="mb-6 border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-purple-600">
-              <Sparkles className="w-5 h-5" />
-              今日亮点：富士山绝景之旅
+        {/* Weather Card */}
+        <Card className="border-2 border-blue-200 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-blue-100 to-cyan-100">
+            <CardTitle className="flex items-center gap-2">
+              <Cloud className="h-6 w-6 text-blue-600" />
+              2月8日天气
             </CardTitle>
-            <CardDescription className="text-purple-600 font-medium">
-              07:30-19:30 · 跟团一日游 · 富士山五合目+忍野八海+河口湖
-            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <h4 className="font-semibold text-gray-800 mb-2">📸 必拍机位</h4>
-              <p className="text-sm text-gray-600">
-                <strong>富士山五合目</strong>（推荐★★★★★）- 海拔2,305米，可以近距离观赏富士山山顶和云海<br/>
-                <strong>忍野八海</strong>（推荐★★★★★）- 清澈池塘倒映富士山，日式田园风光<br/>
-                <strong>河口湖</strong>（推荐★★★★★）- 湖面倒影+红色鸟居+富士山三者同框
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-800 mb-2">⚠️ 注意事项</h4>
-              <p className="text-sm text-gray-600">
-                提前准备好保暖衣物、相机、充电宝、零食和水。五合目气温低，注意防寒。高原地区可能有轻微高原反应，慢慢行动。
-              </p>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-4xl font-bold text-blue-600">5°C</div>
+                <div className="text-gray-600">晴天</div>
+              </div>
+              <div className="text-right text-sm text-gray-600">
+                <div>💧 湿度: 45%</div>
+                <div>🌬️ 风速: 3m/s</div>
+                <div className="mt-2 text-purple-600 font-medium">
+                  建议穿搭：羽绒服+保暖内衣
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* 主要内容标签页 */}
-        <Tabs defaultValue="spots" className="mb-8">
-          <TabsList className="grid w-full grid-cols-3 bg-pink-100">
-            <TabsTrigger value="spots" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
-              <Camera className="w-4 h-4 mr-2" />
+        {/* Important Reminders */}
+        <Card className="border-2 border-yellow-200 bg-yellow-50 shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-yellow-800">
+              <AlertCircle className="h-6 w-6" />
+              重要提醒
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm text-yellow-800">
+              <li className="flex items-start gap-2">
+                <span className="font-bold">🚌 集合地点</span> - JR东京站新丸之内大楼BEAMS标牌下，请提前10-15分钟到达
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="font-bold">❄️ 西湖冰之祭典</span> - 2月8日前往西湖冰之祭典，穿防滑保暖鞋
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="font-bold">♨️ 温泉费用</span> - 温泉入浴、晚餐、毛巾需自费
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="font-bold">🎆 冬花火大会</span> - 20:00-20:20，建议19:00-19:30到达占位
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="font-bold">🕚 返程时间</span> - 约23:00抵达东京站，请勿安排当晚其他活动
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        {/* Highlight Card */}
+        <Card className="border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-pink-600">
+              <Sparkles className="h-6 w-6" />
+              今日亮点：河口湖冬花火大会
+            </CardTitle>
+            <CardDescription className="text-base">
+              20:00-20:20 · 山梨人气第1位 · 大池公园主会场
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-purple-600 mb-2">最佳观赏点</h4>
+                <p className="text-sm text-gray-700">
+                  <span className="font-bold">大池公园</span>（推荐★★★★★）- 主会场，可拍摄烟火、湖面倒影和富士山的三重美景
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-purple-600 mb-2">占位策略</h4>
+                <p className="text-sm text-gray-700">
+                  19:00-19:30抵达，选择靠近湖边的位置，既能拍到烟火，又能拍到湖面倒影
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Main Tabs */}
+        <Tabs defaultValue="spots" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 bg-purple-100">
+            <TabsTrigger value="spots" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              <Camera className="mr-2 h-4 w-4" />
               景点打卡
             </TabsTrigger>
-            <TabsTrigger value="route" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
-              <Bus className="w-4 h-4 mr-2" />
-              路线导航
+            <TabsTrigger value="subway" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              <Train className="mr-2 h-4 w-4" />
+              交通指引
             </TabsTrigger>
-            <TabsTrigger value="tips" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
-              <Info className="w-4 h-4 mr-2" />
-              旅行贴士
+            <TabsTrigger value="route" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              <Navigation className="mr-2 h-4 w-4" />
+              路线导航
             </TabsTrigger>
           </TabsList>
 
-          {/* 景点打卡标签页 */}
+          {/* Spots Tab */}
           <TabsContent value="spots" className="space-y-6 mt-6">
             {spots.map((spot, index) => (
-              <Card key={spot.id} className="border-2 border-pink-200 hover:border-pink-400 transition-all hover:shadow-lg bg-white/90 backdrop-blur">
-                <CardHeader>
+              <Card key={spot.id} className="border-2 border-purple-200 shadow-lg hover:shadow-xl transition-shadow">
+                <CardHeader className="bg-gradient-to-r from-pink-50 to-purple-50">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-4xl">{spot.icon}</span>
                         <div>
-                          <CardTitle className="text-2xl text-gray-800 flex items-center gap-2">
-                            {spot.title}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => speakJapanese(spot.titleJa)}
-                              className="hover:bg-pink-100"
-                            >
-                              <Volume2 className="w-4 h-4 text-pink-500" />
-                            </Button>
+                          <CardTitle className="text-xl">
+                            <JapaneseText 
+                              zh={spot.title}
+                              ja={spot.titleJa}
+                              en={spot.titleEn}
+                              language={language}
+                            />
                           </CardTitle>
-                          <CardDescription className="text-base">
-                            <JapaneseText zh={spot.location} ja={spot.titleJa} en={spot.titleEn} />
+                          <CardDescription className="flex items-center gap-2 mt-1">
+                            <MapPin className="h-4 w-4" />
+                            {spot.location}
                           </CardDescription>
-                          <Badge variant="outline" className="mt-1 text-purple-600 border-purple-300">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {spot.time}
-                          </Badge>
+                          {spot.time && (
+                            <CardDescription className="flex items-center gap-2 mt-1">
+                              <Clock className="h-4 w-4" />
+                              {spot.time}
+                            </CardDescription>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -517,299 +661,181 @@ export default function Day3() {
                         id={spot.id}
                         checked={checkedSpots.has(spot.id)}
                         onCheckedChange={() => toggleSpot(spot.id)}
-                        className="w-6 h-6 border-2 border-pink-400 data-[state=checked]:bg-pink-500"
+                        className="h-6 w-6"
                       />
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => openNavigation(spot.title, spot.lat, spot.lng)}
-                        className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                        onClick={() => speakJapanese(spot.titleJa)}
+                        className="gap-1"
                       >
-                        <Navigation className="w-4 h-4 mr-1" />
-                        导航
+                        <Volume2 className="h-3 w-3" />
                       </Button>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* 历史故事 */}
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                      <Info className="w-4 h-4" />
+                <CardContent className="pt-6 space-y-4">
+                  {/* History */}
+                  <div>
+                    <h4 className="font-semibold text-purple-600 mb-2 flex items-center gap-2">
+                      <Info className="h-4 w-4" />
                       历史故事
                     </h4>
                     <p className="text-sm text-gray-700 leading-relaxed">{spot.history}</p>
                   </div>
 
-                  {/* 特别说明 */}
-                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                    <h4 className="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
-                      <Star className="w-4 h-4" />
-                      特别说明
-                    </h4>
-                    <p className="text-sm text-gray-700 leading-relaxed">{spot.special}</p>
-                  </div>
+                  {/* Special */}
+                  {spot.special && (
+                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                      <h4 className="font-semibold text-yellow-800 mb-2">💡 特别说明</h4>
+                      <p className="text-sm text-yellow-700">{spot.special}</p>
+                    </div>
+                  )}
 
-                  {/* 拍照技巧 */}
-                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <h4 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
-                      <Camera className="w-4 h-4" />
+                  {/* Photo Tips */}
+                  <div>
+                    <h4 className="font-semibold text-purple-600 mb-2 flex items-center gap-2">
+                      <Camera className="h-4 w-4" />
                       拍照技巧
                     </h4>
-                    <ul className="space-y-1 text-sm text-gray-700">
+                    <ul className="text-sm text-gray-700 space-y-1">
                       {spot.photoTips.map((tip, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="text-purple-500 mt-1">•</span>
+                          <span className="text-purple-400 mt-1">•</span>
                           <span>{tip}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* 女生拍照姿势 */}
-                  <div className="bg-pink-50 p-4 rounded-lg border-2 border-pink-300">
-                    <h4 className="font-semibold text-pink-800 mb-2 flex items-center gap-2">
-                      <span className="text-lg">👩</span>
-                      女生拍照姿势（重点）
+                  {/* Female Poses */}
+                  <div className="bg-pink-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-pink-600 mb-3 flex items-center gap-2">
+                      👩 女生拍照姿势（重点）
                     </h4>
-                    <ul className="space-y-2 text-sm text-gray-700">
+                    <ul className="text-sm text-gray-700 space-y-2">
                       {spot.femalePoses.map((pose, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="text-pink-500 font-bold">•</span>
+                          <span className="text-pink-400 font-bold mt-0.5">•</span>
                           <span>{pose}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* 情侣互动姿势 */}
-                  <div className="bg-rose-50 p-4 rounded-lg border-2 border-rose-300">
-                    <h4 className="font-semibold text-rose-800 mb-2 flex items-center gap-2">
-                      <span className="text-lg">💑</span>
-                      情侣互动姿势
+                  {/* Couple Poses */}
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-purple-600 mb-3 flex items-center gap-2">
+                      💑 情侣互动姿势
                     </h4>
-                    <ul className="space-y-2 text-sm text-gray-700">
+                    <ul className="text-sm text-gray-700 space-y-2">
                       {spot.couplePoses.map((pose, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="text-rose-500 font-bold">•</span>
+                          <span className="text-purple-400 font-bold mt-0.5">•</span>
                           <span>{pose}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* 美食推荐 */}
-                  <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                    <h4 className="font-semibold text-orange-800 mb-2 flex items-center gap-2">
-                      <Utensils className="w-4 h-4" />
+                  {/* Food */}
+                  <div>
+                    <h4 className="font-semibold text-purple-600 mb-2 flex items-center gap-2">
+                      <Utensils className="h-4 w-4" />
                       美食推荐
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {spot.food.map((item, i) => (
-                        <Badge key={i} variant="secondary" className="bg-orange-100 text-orange-700 border-orange-300">
+                        <Badge key={i} variant="secondary" className="bg-orange-100 text-orange-700">
                           {item}
                         </Badge>
                       ))}
                     </div>
                   </div>
+
+                  {/* Tips */}
+                  {spot.tips && spot.tips.length > 0 && (
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-blue-600 mb-2">💡 实用建议</h4>
+                      <ul className="text-sm text-gray-700 space-y-1">
+                        {spot.tips.map((tip, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-blue-400 mt-1">•</span>
+                            <span>{tip}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Navigation Button */}
+                  <Button 
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                    onClick={() => handleNavigation(spot.lat, spot.lng, spot.title)}
+                  >
+                    <Navigation className="mr-2 h-4 w-4" />
+                    导航
+                  </Button>
                 </CardContent>
               </Card>
             ))}
           </TabsContent>
 
-          {/* 路线导航标签页 */}
-          <TabsContent value="route" className="mt-6">
-            <Card className="border-2 border-purple-200 bg-white/90 backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-purple-600">2月8日路线图</CardTitle>
-                <CardDescription>富士山一日游完整路线 / 2月8日跟团行程</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {routeSteps.map((step, index) => (
-                    <div key={index} className="flex items-center gap-4">
-                      <div className="flex flex-col items-center">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                          {index + 1}
-                        </div>
-                        {index < routeSteps.length - 1 && (
-                          <div className="w-1 h-16 bg-gradient-to-b from-pink-300 to-purple-300 my-2"></div>
-                        )}
-                      </div>
-                      <div className="flex-1 bg-gradient-to-r from-pink-50 to-purple-50 p-4 rounded-lg border border-purple-200">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-semibold text-gray-800">{step.from}</span>
-                          <span className="text-2xl">{step.icon}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Badge variant="outline" className="bg-white">{step.method}</Badge>
-                          <span>→</span>
-                          <span className="font-medium">{step.time}</span>
-                        </div>
-                        <div className="mt-2 text-sm font-medium text-purple-600">
-                          ↓ {step.to}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          {/* Subway Tab */}
+          <TabsContent value="subway" className="space-y-4 mt-6">
+            {subwayRoutes.map((route, index) => (
+              <Card key={index} className="border-2 border-purple-200 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+                  <CardTitle className="flex items-center gap-2">
+                    <Train className="h-5 w-5" />
+                    {route.from} → {route.to}
+                  </CardTitle>
+                  <CardDescription>
+                    <Badge className={`${route.color} text-white`}>{route.line}</Badge>
+                    <span className="ml-2">约 {route.time}</span>
+                    <span className="ml-2 text-purple-600 font-semibold">{route.fare}</span>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  <ol className="space-y-2">
+                    {route.steps.map((step, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm">
+                        <Badge variant="outline" className="mt-0.5">{i + 1}</Badge>
+                        <span className="text-gray-700">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+            ))}
+          </TabsContent>
 
-                <div className="mt-6 p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-lg border-2 border-purple-300">
-                  <h4 className="font-semibold text-purple-800 mb-2">路线包含在内（跟团）</h4>
-                  <ul className="space-y-1 text-sm text-gray-700">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
-                      往返旅游大巴交通
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
-                      富士山五合目入场
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
-                      忍野八海游览
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
-                      河口湖自由活动时间
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
-                      中文导游讲解
-                    </li>
-                  </ul>
-                </div>
+          {/* Route Tab */}
+          <TabsContent value="route" className="mt-6">
+            <Card className="border-2 border-purple-200 shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+                <CardTitle className="flex items-center gap-2">
+                  <Navigation className="h-5 w-5" />
+                  今日路线图
+                </CardTitle>
+                <CardDescription>富士山一日游完整路线</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <VisualRouteMap spots={spots} />
               </CardContent>
             </Card>
           </TabsContent>
-
-          {/* 旅行贴士标签页 */}
-          <TabsContent value="tips" className="mt-6">
-            <div className="space-y-4">
-              <Card className="border-2 border-blue-200 bg-white/90 backdrop-blur">
-                <CardHeader>
-                  <CardTitle className="text-blue-600">出发前准备</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm text-gray-700">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <span><strong>护照</strong> - 务必携带，部分景点需要出示</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <span><strong>保暖衣物</strong> - 羽绒服、围巾、手套、保暖内衣</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <span><strong>摄影设备</strong> - 相机、手机、充电宝、备用电池</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <span><strong>零食和水</strong> - 车上和景点可能需要</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <span><strong>晕车药</strong> - 如果容易晕车，提前准备</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 border-orange-200 bg-white/90 backdrop-blur">
-                <CardHeader>
-                  <CardTitle className="text-orange-600">拍照建议</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm text-gray-700">
-                  <div className="flex items-start gap-2">
-                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
-                    <span><strong>五合目</strong> - 展望台全景、神社鸟居、雪景特写</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
-                    <span><strong>忍野八海</strong> - 池塘倒影、茅草屋、清澈池水</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
-                    <span><strong>河口湖</strong> - 湖畔倒影、红色鸟居、湖边栏杆</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
-                    <span><strong>最佳时间</strong> - 上午10-12点光线最好，下午3-5点适合拍日落</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 border-red-200 bg-white/90 backdrop-blur">
-                <CardHeader>
-                  <CardTitle className="text-red-600">注意事项</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm text-gray-700">
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
-                    <span><strong>高原反应</strong> - 五合目海拔2,305米，可能有轻微高原反应，慢慢行动</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
-                    <span><strong>气温低</strong> - 五合目气温约-5℃，务必穿好保暖衣物</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
-                    <span><strong>天气变化</strong> - 山区天气多变，可能看不到富士山全貌</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
-                    <span><strong>时间紧凑</strong> - 跟团行程时间固定，注意不要掉队</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
-                    <span><strong>纪念品</strong> - 五合目邮局可以寄明信片，盖富士山纪念章</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 border-green-200 bg-white/90 backdrop-blur">
-                <CardHeader>
-                  <CardTitle className="text-green-600">预算参考</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm text-gray-700">
-                  <div className="flex justify-between items-center">
-                    <span>富士山一日游团费</span>
-                    <span className="font-semibold text-green-600">¥8,000-12,000日元/人</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>午餐（团餐包含）</span>
-                    <span className="font-semibold text-green-600">已包含</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>零食和饮料</span>
-                    <span className="font-semibold text-green-600">¥1,000日元</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>纪念品和明信片</span>
-                    <span className="font-semibold text-green-600">¥2,000-3,000日元</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>晚餐（上野）</span>
-                    <span className="font-semibold text-green-600">¥2,000-3,000日元</span>
-                  </div>
-                  <div className="border-t-2 border-green-300 pt-2 mt-2 flex justify-between items-center font-bold">
-                    <span>预计总花费（2人）</span>
-                    <span className="text-lg text-green-600">¥22,000-30,000日元</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
         </Tabs>
 
-        {/* 底部导航 */}
-        <div className="flex justify-between items-center mt-8">
+        {/* Navigation Buttons */}
+        <div className="flex justify-between pt-6">
           <Link href="/day2">
-            <Button variant="outline" className="border-2 border-pink-300 hover:bg-pink-50">
+            <Button variant="outline" className="gap-2">
               ← 上一天
             </Button>
           </Link>
           <Link href="/day4">
-            <Button className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">
+            <Button className="gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
               下一天 →
             </Button>
           </Link>
