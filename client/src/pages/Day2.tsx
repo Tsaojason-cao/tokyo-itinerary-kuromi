@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Utensils,
   Info,
   ExternalLink,
@@ -824,7 +824,7 @@ export default function Day2() {
         <Card className="mb-6 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-pink-600">
-              <Sparkles className="w-6 h-6" />
+              <Star className="w-6 h-6" />
               今日亮点：横滨烟火大会
             </CardTitle>
             <CardDescription className="text-pink-700">
@@ -931,7 +931,7 @@ export default function Day2() {
                   {spot.special && (
                     <div className="p-3 bg-yellow-50 rounded-lg border-2 border-yellow-200">
                       <h4 className="font-semibold text-yellow-900 mb-2 flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
+                        <Star className="w-4 h-4" />
                         特别说明
                       </h4>
                       <p className="text-sm text-gray-700">{spot.special}</p>
@@ -1291,7 +1291,7 @@ export default function Day2() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-pink-50 rounded-lg border-2 border-pink-200">
-                    <Sparkles className="w-5 h-5 text-pink-600" />
+                    <Star className="w-5 h-5 text-pink-600" />
                     <div>
                       <div className="font-semibold">18:30-19:05 横滨烟火大会</div>
                       <div className="text-sm text-gray-600">18:30前占位，19:00-19:05烟火表演</div>

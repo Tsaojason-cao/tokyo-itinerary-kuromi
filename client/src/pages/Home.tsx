@@ -19,7 +19,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Volume2
 } from "lucide-react";
 
@@ -571,7 +571,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-xl font-bold text-purple-900 flex items-center gap-2">
-                <Sparkles className="w-6 h-6 fill-purple-600 text-purple-600" />
+                <Star className="w-6 h-6 fill-purple-600 text-purple-600" />
                 模块化行程规划器
               </h3>
               <p className="text-sm text-purple-700 mt-1">

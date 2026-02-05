@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Utensils,
   Info,
   ExternalLink,
@@ -490,7 +490,7 @@ export default function Day4() {
         <Card className="mb-6 border-2 border-cyan-200 bg-gradient-to-br from-cyan-50 to-blue-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-cyan-600">
-              <Sparkles className="w-5 h-5" />
+              <Star className="w-5 h-5" />
               今日亮点：《灌篮高手》圣地巡礼
             </CardTitle>
             <CardDescription className="text-cyan-600 font-medium">

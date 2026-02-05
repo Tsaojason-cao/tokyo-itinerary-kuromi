@@ -15,7 +15,7 @@ import {
   Star,
   Heart,
   Hotel,
-  Sparkles,
+  Star,
   Map as MapIcon,
   Info,
   Filter
@@ -152,7 +152,7 @@ export default function Planner() {
               <h1 className="text-3xl font-bold text-purple-600 flex items-center gap-2">
                 <img src="/images/kuromi-main.png" alt="Kuromi" className="w-10 h-10 rounded-full border-2 border-pink-300" />
                 模块化行程规划器
-                <Sparkles className="w-6 h-6 fill-pink-400 text-pink-400 animate-pulse" />
+                <Star className="w-6 h-6 fill-pink-400 text-pink-400 animate-pulse" />
               </h1>
               <p className="text-sm text-purple-600/70 mt-1">自定义你的东京之旅</p>
             </div>

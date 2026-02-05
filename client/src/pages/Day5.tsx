@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Utensils,
   Info,
   ExternalLink,
@@ -524,7 +524,7 @@ export default function Day5() {
         <Card className="mb-6 border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-purple-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-pink-600">
-              <Sparkles className="w-5 h-5" />
+              <Star className="w-5 h-5" />
               今日亮点：东京塔 & 六本木夜景
             </CardTitle>
             <CardDescription className="text-pink-600 font-medium">

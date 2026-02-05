@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Utensils,
   Info,
   ExternalLink,
@@ -449,7 +449,7 @@ export default function Day6() {
         <Card className="mb-6 border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-purple-600">
-              <Sparkles className="w-5 h-5" />
+              <Star className="w-5 h-5" />
               今日亮点：YUMENOHANASHI LIVE & SHIBUYA SKY
             </CardTitle>
             <CardDescription className="text-purple-600 font-medium">

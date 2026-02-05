@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Utensils,
   Info,
   ExternalLink,
@@ -462,7 +462,7 @@ export default function Day1() {
         <Card className="border-2 border-purple-200 bg-purple-50/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-purple-600">
-              <Sparkles className="w-5 h-5" />
+              <Star className="w-5 h-5" />
               今日亮点
             </CardTitle>
           </CardHeader>

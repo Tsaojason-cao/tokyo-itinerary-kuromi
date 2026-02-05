@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Star,
   Heart,
-  Sparkles,
+  Star,
   Utensils,
   Info,
   ExternalLink,
@@ -583,7 +583,7 @@ export default function Day3() {
         <Card className="border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-pink-600">
-              <Sparkles className="h-6 w-6" />
+              <Star className="h-6 w-6" />
               今日亮点：河口湖冬花火大会
             </CardTitle>
             <CardDescription className="text-base">
