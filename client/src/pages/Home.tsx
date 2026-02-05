@@ -577,18 +577,20 @@ export default function Home() {
 
         {/* Days Navigation */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4">
-          <Card className="border-purple-300 bg-purple-50">
-            <CardHeader>
-              <CardTitle className="text-lg">Day 1</CardTitle>
-              <CardDescription>抵达日 · 上野</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-3">成田机场 → 上野 → 秋叶原</p>
-              <Button variant="outline" className="w-full" disabled>
-                当前页面
-              </Button>
-            </CardContent>
-          </Card>
+          <Link href="/day1">
+            <Card className="border-purple-300 bg-purple-50 hover:border-purple-500 cursor-pointer transition-all">
+              <CardHeader>
+                <CardTitle className="text-lg">Day 1</CardTitle>
+                <CardDescription>抵达日 · 上野</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">成田机场 → 上野 → 阿美横丁 → 业务超市</p>
+                <Button variant="outline" className="w-full">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
 
           <Link href="/day2">
             <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
