@@ -21,14 +21,14 @@ import {
   Utensils,
   Info,
   ExternalLink,
-  Volume2
+  Volume2,
+  Mountain,
+  Bus
 } from "lucide-react";
 import { Link } from "wouter";
-import { VisualRouteMap } from "@/components/VisualRouteMap";
 
 export default function Day3() {
   const [checkedSpots, setCheckedSpots] = useState<Set<string>>(new Set());
-  const [language, setLanguage] = useState<'zh' | 'ja' | 'en'>('zh');
   
   const toggleSpot = (id: string) => {
     const newSet = new Set(checkedSpots);
@@ -46,10 +46,8 @@ export default function Day3() {
       return;
     }
 
-    // 取消当前正在播放的语音
     window.speechSynthesis.cancel();
 
-    // 等待一小段时间确保取消完成
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ja-JP';
@@ -57,11 +55,9 @@ export default function Day3() {
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
 
-      // 获取可用的语音列表
       const voices = window.speechSynthesis.getVoices();
       const japaneseVoices = voices.filter(voice => voice.lang.startsWith('ja'));
       
-      // 如果有日语语音包，使用第一个
       if (japaneseVoices.length > 0) {
         utterance.voice = japaneseVoices[0];
       }
@@ -86,1197 +82,739 @@ export default function Day3() {
     }
   };
 
-  const progress = (checkedSpots.size / 22) * 100;
+  const progress = (checkedSpots.size / 7) * 100;
 
   const spots = [
     {
-      id: "kaminarimon",
-      title: "雷门",
-      titleJa: "雷門",
-      titleEn: "Kaminarimon Gate",
-      location: "浅草寺入口",
-      icon: "⛩️",
-      lat: 35.7106,
-      lng: 139.7967,
-      history: "建于公元941年，由军事指挥官平之金正所建。供奉风神和雷神，守护伽藍防止风灾水灾。现在的门是1960年由松下幸之助捐赠重建。",
-      special: "💡 大灯笼重达700公斤，底部刻有「松下電器」字样。早上7点前人最少，是拍照黄金时间！",
+      id: "meeting-point",
+      title: "上野集合点",
+      titleJa: "上野集合点",
+      titleEn: "Ueno Meeting Point",
+      location: "上野站附近",
+      icon: "🚌",
+      time: "07:00-07:30",
+      lat: 35.7141,
+      lng: 139.7774,
+      history: "从酒店步行至上野站附近的旅游团集合点。提前15分钟到达，携带护照，穿好防寒衣物。",
+      special: "💡 建议前一晚准备好所有物品：护照、相机、充电宝、保暖衣物、零食和水。富士山五合目气温约-5℃！",
       photoTips: [
-        "正面拍摄：站在灯笼正下方，仰拍完整的雷门和大灯笼",
-        "侧面角度：从侧面45度拍摄，可以拍到风神或雷神雕像",
-        "和服人像：穿和服站在雷门下方，从正面拍摄半身照避开人群",
-        "夜景：晚上灯笼点灯后，拍摄金色灯光下的雷门更有氛围"
+        "出发前在酒店门口拍摄出发照，展示期待的心情",
+        "在旅游大巴前拍摄合影，记录旅程开始",
+        "车窗拍摄：在大巴上透过车窗拍摄沿途风景",
+        "自拍：在车上拍摄期待的表情和手势"
       ],
-      
-      
+      food: ["便利店早餐", "车上零食"],
       femalePoses: [
-        "【经典站姿】双脚前后交叉站立，前脚脚尖微微翘起，身体微侧45度对镜头，一手轻提和服袖子展示花纹，另一手自然垂放或轻放腰侧",
-        "【托腮姿势】站在雷门侧面，一手轻托脸颊做「牙痛」状，头部微微倾斜，眼神看向镜头外，营造害羞可爱感",
-        "【回眸杀】背对雷门大灯笼，身体转45度，头部转向镜头，露出侧脸和发饰，一手轻提袖子",
-        "【仰拍姿势】站在灯笼正下方，双手合十做祈祷状，头部微微仰起，表情虔诚",
-        "【遮脸姿势】用扇子或手机遮住半张脸，只露出眼睛和发饰，眼神看向镜头"
+        "【出发姿势】站在大巴前，一手拿着行李包，一手做加油手势，表情兴奋",
+        "【车窗自拍】坐在车上，脸贴近车窗，用手机自拍，背景是窗外风景",
+        "【期待表情】双手合十放在胸前，做祈祷状，表情期待又兴奋",
+        "【比心姿势】对着镜头比心，背景是旅游大巴",
+        "【闭眼休息】在车上闭眼休息，侧脸对镜头，营造安静美好的氛围"
       ],
       couplePoses: [
-        "【牵手前行】男生在前牵着女生的手，女生另一手提着和服袖子，两人自然行走，回头看镜头",
-        "【背后拥抱】女生站在前面看向雷门，男生从背后轻轻环抱，女生可以把手放在男生手上",
-        "【对视互动】两人面对面站立，女生轻靠男生，男生一手扶着女生腰部，两人深情对视",
-        "【比心姿势】两人一起用手做爱心手势，放在雷门大灯笼前",
-        "【亲额头】男生亲吻女生额头，女生闭眼微笑，侧面拍摄"
-      ],
-      
-      food: ["人形烧（仲见世大道）", "雷门三定天妇罗", "浅草梅园红豆汤"]
+        "【出发合影】两人站在大巴前，女生跳起来，男生在旁边笑",
+        "【车上依偎】女生靠在男生肩上，两人看向窗外",
+        "【比心互动】两人一起对镜头比心，表情开心",
+        "【喂食互动】女生喂男生吃零食，男生做要吃的动作",
+        "【牵手期待】两人牵手，看向前方，充满期待"
+      ]
     },
     {
-      id: "nakamise",
-      title: "仲见世大道",
-      titleJa: "仲見世通り",
-      titleEn: "Nakamise Shopping Street",
-      location: "浅草寺参道",
-      icon: "🏮",
-      lat: 35.7115,
-      lng: 139.7967,
-      history: "江户时代形成的参道商店街，全长约250米，有89家店铺。是日本最古老的商店街之一，至今保留着传统江户风情。",
-      special: "💡 商店街的红色灯笼在夜晚点灯后超美！建议傍晚时分拍摄，既有自然光又有灯笼光。",
+      id: "fuji-5th-station",
+      title: "富士山五合目",
+      titleJa: "富士山五合目",
+      titleEn: "Mt. Fuji 5th Station",
+      location: "海拔2,305米",
+      icon: "🗻",
+      time: "10:00-12:00",
+      lat: 35.3606,
+      lng: 138.7278,
+      history: "富士山五合目位于海拔2,305米，是普通游客可以轻松到达的最高点。这里设有展望台、神社、餐厅和纪念品商店。天气晴朗时，可以俯瞰山梨县和静冈县的壮丽景色。",
+      special: "💡 气温约-5℃，务必穿戴保暖衣物！可能会有轻微高原反应，注意慢慢行动。五合目邮局可以寄明信片，盖富士山纪念章！",
       photoTips: [
-        "背影杀：穿和服在商店街中央拍摄背影，营造穿越感",
-        "灯笼特写：拍摄红色灯笼和传统店铺，突出江户风情",
-        "人群中：利用人群作为前景，拍摄热闹的商店街氛围",
-        "细节照：拍摄传统小吃、手工艺品等特色商品"
+        "展望台全景：站在展望台拍摄富士山山顶和云海全景",
+        "雪景特写：拍摄积雪、冰柱等冬季特有的雪景细节",
+        "神社鸟居：以富士山神社的红色鸟居为前景，富士山为背景",
+        "云海俯瞰：如果天气好，可以拍摄脚下的云海和远处的山脉",
+        "纪念碑合影：在五合目标志碑前拍摄纪念照"
       ],
-      
-      
+      food: ["五合目餐厅日式定食", "热红豆汤", "富士山限定零食"],
       femalePoses: [
-        "【背影杀】穿和服在商店街中央，背对镜头行走，头部转向一侧露出侧脸和发饰，一手提袖子",
-        "【边走边吃】一手拿着小吃（人形烧、炸馒头），另一手做要吃的动作，表情开心",
-        "【橱窗前】站在传统店铺橱窗前，侧身看向橱窗内的商品，一手轻触玻璃",
-        "【灯笼特写】站在红色灯笼下，双手轻托一个小灯笼装饰品，脸部靠近做亲吻状",
-        "【蹲下拍摄】蹲下拍摄地面商品，腿部交叉，和服自然展开，回头看镜头"
+        "【张开双臂】站在展望台，张开双臂拥抱富士山，表情兴奋",
+        "【雪景互动】蹲下触摸雪地，回头看镜头，表情惊喜",
+        "【鸟居前祈福】站在神社鸟居前，双手合十祈祷，侧面拍摄",
+        "【云海眺望】站在栏杆前，一手扶栏杆，眺望远方云海，侧脸拍摄",
+        "【雪地天使】躺在雪地上做雪天使动作，从上方俯拍"
       ],
       couplePoses: [
-        "【喂食互动】女生拿着小吃喂男生，男生做要吃的动作，两人笑着互动",
-        "【并肩行走】两人牵手并肩走在商店街，从背后拍摄，展示和服背面",
-        "【共撑一伞】两人共撑一把和伞，头部靠近，从侧面拍摄",
-        "【指向互动】女生指向某个店铺，男生顺着看过去，展现自然互动",
-        "【拥抱亲吻】在人群中拥抱，男生亲吻女生脸颊，用手机或食物遮挡"
-      ],
-      food: ["木村家人形烧", "舟和芋羊羹", "浅草九重炸馒头"]
+        "【背后拥抱】男生从背后环抱女生，两人一起看向富士山",
+        "【雪球互动】两人一起堆雪球或打雪仗，抓拍欢乐瞬间",
+        "【牵手眺望】两人牵手站在展望台，背影拍摄，背景是富士山",
+        "【额头相抵】两人额头相抵，闭眼微笑，雪景为背景",
+        "【跳跃合影】两人一起跳起来，抓拍在空中的瞬间，背景是富士山"
+      ]
     },
     {
-      id: "sensoji",
-      title: "浅草寺本堂",
-      titleJa: "浅草寺本堂",
-      titleEn: "Sensoji Main Hall",
-      location: "浅草寺",
-      icon: "🏯",
-      lat: 35.7148,
-      lng: 139.7967,
-      history: "东京最古老的寺庙，建于628年。传说渔夫兄弟在隅田川捕鱼时捞起观音像，后建寺供奉。德川家康时期被指定为幕府朝拜场所。",
-      special: "💡 本堂前的大香炉烟雾据说能治病！很多人会把烟雾扇到身上祈求健康。抽签100日元一次，凶签可以系在旁边的架子上化解。",
+      id: "oshino-hakkai",
+      title: "忍野八海",
+      titleJa: "忍野八海",
+      titleEn: "Oshino Hakkai",
+      location: "富士山融雪清泉",
+      icon: "💧",
+      time: "12:00-13:30",
+      lat: 35.4567,
+      lng: 138.8447,
+      history: "忍野八海是富士山融雪形成的8个清澈见底的池塘，被称为'日本九寨沟'。这些池塘水质极佳，透明度高，可以清晰看到池底的水草和游鱼。周围保留着传统的茅草屋建筑，充满日式田园风情。",
+      special: "💡 池水常年保持12-13℃，清澈见底！可以在这里品尝富士山泉水，还可以买到用泉水制作的豆腐和荞麦面。",
       photoTips: [
-        "祈福瞬间：拍摄参拜、抽签或往香炉扇烟的瞬间",
-        "建筑全景：从本堂前广场拍摄完整的寺庙建筑",
-        "细节特写：拍摄精美的屋檐雕刻和装饰",
-        "人物剪影：逆光拍摄在本堂前参拜的人物剪影"
+        "池塘倒影：拍摄清澈池水中的富士山倒影（天气好时）",
+        "茅草屋背景：以传统茅草屋为背景拍摄日式田园风光",
+        "水中游鱼：近距离拍摄池中清晰可见的锦鲤和水草",
+        "小桥流水：拍摄石桥、水车等传统日式景观元素",
+        "雪景村落：冬季可以拍摄雪中的茅草屋和池塘"
       ],
-      
-      
+      food: ["忍野八海豆腐", "荞麦面", "富士山泉水", "日式定食（团餐）"],
       femalePoses: [
-        "【祈福姿势】双手合十放在胸前，闭眼祈祷，表情虔诚安详",
-        "【扇烟姿势】站在大香炉前，双手做扇烟动作，烟雾缭绕中拍摄",
-        "【抽签瞬间】一手拿着签筒，做抽签动作，表情期待",
-        "【建筑前站姿】站在本堂前，双脚交叉，一手提袖展示腰带，另一手轻放胸前",
-        "【侧面剪影】侧身站立，逆光拍摄剪影，双手合十"
+        "【池边蹲姿】蹲在池塘边，一手轻触水面，回头看镜头",
+        "【茅草屋前】站在传统茅草屋前，双手放在身后，微微侧身",
+        "【小桥上】站在石桥中央，一手扶栏杆，另一手轻提衣角",
+        "【喂鱼姿势】蹲下喂池中的锦鲤，侧面拍摄",
+        "【眺望富士山】站在池边，一手遮阳眺望远处的富士山"
       ],
       couplePoses: [
-        "【一起祈福】两人并排站立，双手合十祈祷，头部微微靠近",
-        "【系签互动】女生帮男生系凶签，男生看着女生，温馨互动",
-        "【扇烟互动】两人一起在香炉前扇烟，动作同步",
-        "【看签纸】两人一起看抽到的签纸，头部靠近，表情惊喜",
-        "【寺庙前合影】站在本堂前，女生靠在男生肩上，男生搂着女生"
-      ],
-      food: ["浅草寺周边素食料理", "传统日式茶点"]
+        "【池边并坐】两人并排坐在池边，脚悬在水面上方，背影拍摄",
+        "【小桥牵手】两人牵手走在小桥上，从侧面或背后拍摄",
+        "【茅草屋前合影】两人站在茅草屋前，女生靠在男生肩上",
+        "【喂鱼互动】两人一起蹲下喂鱼，头部靠近",
+        "【倒影合影】两人站在池边，拍摄倒影和真人同框的画面"
+      ]
     },
     {
-      id: "five-story-pagoda",
-      title: "五重塔",
-      titleJa: "五重塔",
-      titleEn: "Five-Story Pagoda",
-      location: "浅草寺",
-      icon: "🗼",
-      lat: 35.7145,
-      lng: 139.7965,
-      history: "建于942年，现在的塔是1973年重建。高53.32米，是浅草寺的标志性建筑之一。五重塔在佛教中象征着五大元素。",
-      special: "💡 隐藏机位：从宝藏门可以拍到五重塔和东京晴空塔同框的震撼画面！",
+      id: "kawaguchiko",
+      title: "河口湖",
+      titleJa: "河口湖",
+      titleEn: "Lake Kawaguchi",
+      location: "富士五湖之一",
+      icon: "🌊",
+      time: "13:30-17:00",
+      lat: 35.5131,
+      lng: 138.7644,
+      history: "河口湖是富士五湖中最北的一个，也是观赏富士山的最佳地点之一。湖面海拔830米，周长约20公里。湖畔有许多温泉旅馆、咖啡厅和美术馆，是富士山地区最受欢迎的旅游目的地。",
+      special: "💡 经典机位：湖畔栏杆处可以拍到富士山倒影！红色鸟居（产屋崎神社）是网红打卡点，可以拍到鸟居、湖水、富士山三者同框的经典照片。",
       photoTips: [
-        "仰拍：从低角度仰拍五重塔，突出其高耸壮观",
-        "同框：从宝藏门拍摄五重塔和晴空塔同框",
-        "和服人像：穿和服站在塔前，拍摄日式古典照片",
-        "樱花季：春天可以拍摄五重塔和樱花的组合"
+        "湖畔倒影：在湖边拍摄富士山在湖面的倒影（无风时最佳）",
+        "红色鸟居：拍摄产屋崎神社的红色鸟居与富士山同框",
+        "湖畔栏杆：站在湖畔栏杆前，以富士山为背景拍摄人像",
+        "咖啡厅窗景：在湖畔咖啡厅透过窗户拍摄富士山",
+        "日落时分：傍晚时拍摄富士山剪影和晚霞"
       ],
-      food: []
-    },
-    {
-      id: "jinrikisha",
-      title: "人力车体验",
-      titleJa: "人力車体験",
-      titleEn: "Rickshaw Experience",
-      location: "浅草寺门口",
-      icon: "🛺",
-      lat: 35.7106,
-      lng: 139.7967,
-      history: "人力车起源于明治时代，是日本传统交通工具。车夫会带你游览浅草隐藏景点，还会帮拍专业情侣照。",
-      special: "💡 车夫都经过专业训练，会讲解浅草历史故事，还会推荐最佳拍照角度！15分钟约3,000日元。",
-      photoTips: [
-        "乘车照：情侣同坐人力车，车夫帮拍",
-        "背景选择：以雷门或五重塔为背景",
-        "动态抓拍：拍摄人力车行进中的画面",
-        "复古感：利用人力车营造复古浪漫氛围"
-      ],
-      food: []
-    },
-    {
-      id: "kagetsu-do",
-      title: "浅草花月堂",
-      titleJa: "浅草花月堂",
-      titleEn: "Asakusa Kagetsu-do",
-      location: "浅草",
-      icon: "🎡",
-      lat: 35.7125,
-      lng: 139.7955,
-      history: "蜜瓜面包专卖店，在浅草地区有两家店。大号的蜜瓜面包非常适合边走边吃。",
-      special: "💡 总店的墙壁是五彩缤纷的风车，风车的颜色和设计每三个月更换一次！超级适合拍照打卡！",
-      photoTips: [
-        "风车背景：以五彩风车墙为背景拍摄",
-        "背影照：从后面拍摄风车的照片，营造节日气氛",
-        "美食照：拍摄大号蜜瓜面包的特写",
-        "色彩对比：利用风车的鲜艳颜色营造活力感"
-      ],
-      
-      
+      food: ["湖畔咖啡厅下午茶", "富士山特色甜品", "温泉旅馆料理"],
       femalePoses: [
-        "【风车墙前】背对五彩风车墙，回头看镜头，一手轻触风车",
-        "【举起面包】双手举起大号蜜瓜面包，做要咬的动作，表情开心",
-        "【遮脸姿势】用蜜瓜面包遮住半张脸，只露出眼睛",
-        "【蹲下拍摄】蹲在风车墙前，腿部侧放，一手拿面包，回头微笑",
-        "【跳跃姿势】在风车墙前跳起，双手举起面包，抓拍动态瞬间"
+        "【湖畔眺望】站在湖边，侧身眺望富士山，一手轻放胸前",
+        "【鸟居前祈福】站在红色鸟居下，双手合十，仰望富士山",
+        "【栏杆倚靠】倚靠在湖畔栏杆上，回头看镜头，富士山在背景",
+        "【咖啡厅窗边】坐在咖啡厅窗边，手捧咖啡杯，窗外是富士山",
+        "【湖边漫步】在湖边小路上漫步，背影拍摄，富士山在远处"
       ],
       couplePoses: [
-        "【共享美食】两人一起咬一个大面包，头部靠近",
-        "【喂食互动】女生喂男生吃面包，男生做夸张表情",
-        "【风车前合影】站在风车墙前，女生举起面包，男生搂着女生",
-        "【比心姿势】两人一起做爱心手势，面包放在前景",
-        "【背靠背】两人背靠背站立，各自拿着面包"
-      ],
-      food: ["大号蜜瓜面包", "特色甜点"]
+        "【湖边拥抱】男生从背后环抱女生，两人一起看向富士山和湖面",
+        "【鸟居下合影】两人站在红色鸟居下，牵手或拥抱，富士山为背景",
+        "【栏杆前依偎】女生靠在男生肩上，两人倚靠栏杆，侧面拍摄",
+        "【咖啡厅约会】两人坐在咖啡厅内，面对面聊天，窗外是富士山",
+        "【湖边牵手】两人牵手在湖边漫步，背影拍摄，夕阳和富士山在背景"
+      ]
     },
     {
-      id: "sumida-park",
-      title: "隅田公园",
-      titleJa: "隅田公園",
-      titleEn: "Sumida Park",
-      location: "浅草附近",
-      icon: "🌸",
-      lat: 35.7145,
-      lng: 139.8025,
-      history: "靠近浅草的隅田公园位于隅田川沿岸。早春樱花盛开，秋天树叶变红，可以拍摄不同季节的美丽照片。",
-      special: "💡 可以以晴空塔为背景拍照！从河边望向天空树的照片超级出片！",
+      id: "return-bus",
+      title: "返回东京",
+      titleJa: "東京へ戻る",
+      titleEn: "Return to Tokyo",
+      location: "旅游大巴",
+      icon: "🚌",
+      time: "17:00-19:30",
+      history: "乘坐旅游大巴返回东京上野。在车上可以休息，整理照片，回味一天的美好时光。",
+      special: "💡 在车上可以整理今天拍的照片，挑选最喜欢的发朋友圈！如果累了就睡一觉，到上野后还有精力去吃晚饭。",
       photoTips: [
-        "晴空塔背景：从河边拍摄晴空塔",
-        "自然风光：春天拍樱花，秋天拍红叶",
-        "和服人像：穿和服在公园的自然风光下拍照",
-        "河边漫步：拍摄在隅田川边散步的照片"
+        "车窗夕阳：透过车窗拍摄夕阳和远处的富士山",
+        "整理照片：拍摄自己在车上看照片的画面",
+        "疲惫休息：拍摄在车上休息的自然状态",
+        "回程自拍：在车上自拍，展示满足的表情"
       ],
-      
-      
+      food: ["车上零食", "矿泉水"],
       femalePoses: [
-        "【晴空塔背景】站在河边，一手指向晴空塔，头部看向塔顶",
-        "【樱花季姿势】站在樱花树下，一手轻触樱花枝，仰头看花",
-        "【河边漫步】沿着河边行走，一手提袖，回头看镜头",
-        "【坐姿拍摄】坐在草地上，腿部侧放，一手撑地，晴空塔在背景",
-        "【逆光剪影】逆光站立，双手做爱心手势，晴空塔在背景"
+        "【车窗眺望】看向车窗外，侧脸拍摄，表情满足",
+        "【整理照片】低头看手机中的照片，微笑",
+        "【闭眼休息】靠在座位上闭眼休息，表情安详",
+        "【自拍微笑】举起手机自拍，做胜利手势",
+        "【回味表情】托腮看向窗外，表情回味无穷"
       ],
       couplePoses: [
-        "【指向晴空塔】女生指向晴空塔，男生从背后环抱",
-        "【河边牵手】牵手沿河边漫步，从侧面拍摄",
-        "【草地坐姿】两人坐在草地上，女生靠在男生肩上，看向晴空塔",
-        "【樱花下亲吻】在樱花树下亲吻，樱花瓣飘落",
-        "【背影合影】两人背对镜头看向晴空塔，牵手"
-      ],
-      food: ["公园周边小吃"]
+        "【肩膀依偎】女生靠在男生肩上休息，男生看向窗外",
+        "【一起看照片】两人一起看手机中的照片，头靠在一起",
+        "【牵手休息】两人牵手，闭眼休息",
+        "【分享零食】女生喂男生吃零食，温馨互动",
+        "【车窗合影】两人一起看向车窗外，侧面拍摄"
+      ]
     },
     {
-      id: "azuma-bridge",
-      title: "吾妻桥",
-      titleJa: "吾妻橋",
-      titleEn: "Azuma Bridge",
-      location: "浅草站外",
-      icon: "🌉",
-      lat: 35.7108,
-      lng: 139.8042,
-      history: "横跨隅田川的大桥，呈鲜艳的朱红色。可以欣赏到晴空塔、朝日集团总部大楼等城市景观。",
-      special: "💡 朝日集团总部大楼带有火焰主题的金色物体超引人注目！建议在船经过桥下时拍照。",
+      id: "ueno-return",
+      title: "抵达上野",
+      titleJa: "上野到着",
+      titleEn: "Arrive at Ueno",
+      location: "上野集合点",
+      icon: "🏁",
+      time: "19:30-20:00",
+      history: "抵达上野集合点，结束一天的富士山之旅。可以在附近的阿美横丁或松坂屋解决晚餐，购买伴手礼。",
+      special: "💡 推荐在阿美横丁吃晚饭，有很多平价美食选择。如果还有精力，可以去松坂屋百货逛逛，或者直接回酒店休息。",
       photoTips: [
-        "桥梁全景：拍摄鲜艳的朱红色大桥",
-        "城市景观：以晴空塔和金色火焰为背景",
-        "动态抓拍：拍摄船只经过桥下的瞬间",
-        "对比照：传统大桥与现代建筑的对比"
+        "抵达合影：在集合点拍摄抵达后的合影",
+        "阿美横丁夜景：拍摄热闹的阿美横丁夜市",
+        "晚餐美食：拍摄晚餐的美食照片",
+        "回酒店路上：拍摄回酒店路上的街景"
       ],
-      
-      
+      food: ["阿美横丁拉面", "居酒屋料理", "松坂屋美食街"],
       femalePoses: [
-        "【桥上站姿】站在朱红色大桥上，一手扶栏杆，身体微侧，晴空塔在背景",
-        "【看向远方】站在桥边，眼神看向远处的晴空塔，侧面拍摄",
-        "【金色火焰背景】以朝日大楼的金色火焰为背景，双手做框架手势",
-        "【动态抓拍】在桥上行走，裙摆飘动，抓拍动态瞬间",
-        "【倚靠栏杆】侧身倚靠桥栏杆，一手撑头，表情慵懒"
+        "【抵达姿势】站在集合点，做胜利手势，表情满足",
+        "【夜市背景】站在阿美横丁的灯笼下，拍摄夜景人像",
+        "【美食照】拿着美食，做要吃的表情",
+        "【疲惫满足】坐在餐厅里，表情疲惫但满足",
+        "【回酒店】走在回酒店的路上，背影拍摄"
       ],
       couplePoses: [
-        "【桥上拥抱】在桥中央拥抱，晴空塔在背景",
-        "【牵手看景】牵手站在桥边，一起看向远处",
-        "【背后环抱】男生从背后环抱女生，女生一手指向晴空塔",
-        "【亲吻剪影】逆光拍摄亲吻剪影，桥梁和晴空塔在背景",
-        "【并肩倚靠】两人并肩倚靠栏杆，从侧面拍摄"
-      ],
-      food: []
+        "【抵达合影】两人在集合点拍合影，做胜利手势",
+        "【夜市漫步】两人牵手在阿美横丁漫步，背影拍摄",
+        "【共享美食】两人一起吃晚餐，分享美食",
+        "【疲惫依偎】在餐厅里，女生靠在男生肩上，表情疲惫但幸福",
+        "【回酒店路上】两人牵手走在回酒店的路上，背影拍摄"
+      ]
     },
     {
-      id: "red-brick",
-      title: "横滨红砖仓库",
-      titleJa: "赤レンガ倉庫",
-      titleEn: "Yokohama Red Brick Warehouse",
-      location: "横滨港",
-      icon: "🏛️",
-      lat: 35.4532,
-      lng: 139.6425,
-      history: "建于1908-1913年明治大正时期，原为横滨港的保税仓库。2002年改建为文化商业设施，被指定为近代化产业遗产。",
-      special: "💡 1号馆和2号馆之间的广场是最佳拍照点！冬天有时会有滑冰场。夜晚棕色灯光照射下的红砖仓库超级浪漫！",
+      id: "hotel-rest",
+      title: "回酒店休息",
+      titleJa: "ホテルで休憩",
+      titleEn: "Rest at Hotel",
+      location: "上野APA酒店",
+      icon: "🏨",
+      time: "20:00-",
+      history: "回到酒店，洗个热水澡，整理今天的照片和视频，为明天的镰仓之旅做准备。",
+      special: "💡 记得给手机和相机充电！可以在便利店买好明天的早餐和饮料。如果有需要洗的衣服，可以使用酒店的洗衣机。",
       photoTips: [
-        "建筑外观：傍晚时分拍摄红砖建筑，光线柔和",
-        "广场全景：从1号馆和2号馆之间的广场拍摄",
-        "夜景：夜晚灯光下的红砖仓库，营造温暖浪漫氛围",
-        "情侣照：在红砖墙前拍摄情侣合影，复古文艺"
+        "酒店房间：拍摄酒店房间的舒适环境",
+        "整理照片：拍摄自己在床上整理照片的画面",
+        "泡澡放松：拍摄浴室和泡澡的场景（注意隐私）",
+        "晚安自拍：睡前自拍，展示满足的表情"
       ],
-      
-      
+      food: ["便利店夜宵", "酒店客房服务"],
       femalePoses: [
-        "【天使翅膀】站在'天使的羽'壁画前，双手向两侧展开，做飞翔姿势",
-        "【红砖墙前】倚靠红砖墙，一手撑墙，一腿微曲，复古文艺感",
-        "【广场中央】站在1号馆和2号馆之间的广场，双脚交叉，一手叉腰",
-        "【夜景姿势】夜晚灯光下，一手轻触脸颊，表情温柔",
-        "【坐姿拍摄】坐在广场台阶上，腿部交叉，一手撑地，回头看镜头"
+        "【床上放松】躺在床上，举起手机看照片，表情满足",
+        "【整理行李】坐在床边整理行李，侧面拍摄",
+        "【泡澡放松】在浴缸边拍摄泡澡的脚或手（注意隐私）",
+        "【晚安自拍】躺在床上自拍，做晚安手势",
+        "【窗边夜景】站在窗边看夜景，背影拍摄"
       ],
       couplePoses: [
-        "【翅膀前合影】站在天使翅膀壁画前，女生在前做飞翔姿势，男生在后环抱",
-        "【红砖墙前亲吻】倚靠红砖墙亲吻，侧面拍摄",
-        "【牵手漫步】牵手在红砖仓库前漫步，从背后拍摄",
-        "【广场拥抱】在广场中央拥抱，红砖仓库在背景",
-        "【坐姿合影】两人坐在台阶上，女生靠在男生肩上，看向海景"
-      ],
-      food: ["红砖仓库美食广场西餐", "Bills松饼", "横滨啤酒"],
-      instagramSpot: "💫 网红打卡：赤レンガ倉庫侧入口正面墙上的'天使的羽'壁画，拍摄背中长出羽毛的照片！"
-    },
-    {
-      id: "yamashita-park",
-      title: "山下公园",
-      titleJa: "山下公園",
-      titleEn: "Yamashita Park",
-      location: "横滨港",
-      icon: "🌅",
-      lat: 35.4437,
-      lng: 139.6501,
-      history: "1930年开园，是日本第一座临海公园。由1923年关东大地震后的瓦砾填海造陆建成，象征横滨的重建与复兴。",
-      special: "💡 公园的花砖道和古老银杏树是特色！玫瑰园区域是烟火大会最佳观赏点。可以看到横滨海湾大桥和港口船只。",
-      photoTips: [
-        "海滨长廊：拍摄海滨步道和横滨地标塔",
-        "夕阳时分：傍晚拍摄夕阳下的海景",
-        "情侣剪影：以海景为背景拍摄情侣剪影",
-        "烟火：19:00-19:05烟火占画面2/3，海面倒影占1/3"
-      ],
-      
-      
-      femalePoses: [
-        "【海边站姿】站在海滨长廊，一手扶栏杆，眼神看向大海，侧面拍摄",
-        "【夕阳剪影】夕阳时分，背对镜头，双手举起做爱心手势",
-        "【玫瑰园姿势】站在玫瑰花丛中，一手轻触花朵，侧脸微笑",
-        "【坐姿拍摄】坐在长椅上，腿部交叉，一手放在椅背，看向大海",
-        "【行走姿势】沿着海滨步道行走，裙摆飘动，回头看镜头"
-      ],
-      couplePoses: [
-        "【海边拥抱】面向大海拥抱，从背后拍摄",
-        "【长椅坐姿】两人坐在长椅上，女生靠在男生肩上，看向大海",
-        "【牵手看夕阳】牵手站立，一起看夕阳，侧面拍摄剪影",
-        "【玫瑰园互动】男生摘花送给女生，女生接花微笑",
-        "【烟火下剪影】烟火绽放时，两人拥抱或牵手，拍摄剪影"
-      ],
-      food: ["山下公园小吃摊", "海景咖啡厅"]
-    },
-    {
-      id: "fireworks-1",
-      title: "烟火大会 - 全景",
-      titleJa: "花火大会 - 全景",
-      titleEn: "Fireworks - Panorama",
-      location: "山下公园",
-      icon: "🎆",
-      lat: 35.4437,
-      lng: 139.6501,
-      history: "横滨烟火大会历史悠久，是港口城市的传统庆典活动。2026年2月7日的冬季烟火虽然只有5分钟，但约3,000发烟火密度极高。",
-      special: "💡 18:00-18:30提前占位！选择玫瑰园区域，既能拍到烟火，又能以横滨地标塔为背景。记得带三脚架！",
-      photoTips: [
-        "经典构图：烟火占画面2/3，海面倒影占1/3",
-        "长曝光：快门2-4秒，光圈F8-F11，ISO 100-200",
-        "手机拍摄：使用专业模式或夜景模式，开启HDR",
-        "连拍组合：使用连拍模式，后期可合成多重曝光"
-      ],
-      
-      
-      femalePoses: [
-        "【仰望烟火】仰头看烟火，双手合十或做祈祷状，侧面拍摄",
-        "【烟火棒姿势】手持烟火棒，做画圈动作，长曝光拍摄",
-        "【坐姿观赏】坐在草地上，腿部侧放，一手撑地，仰头看烟火",
-        "【欢呼姿势】双手举起欢呼，烟火在背景绽放",
-        "【背影剪影】背对镜头，双手举起，烟火在上方"
-      ],
-      couplePoses: [
-        "【拥抱剪影】面对烟火拥抱，从背后拍摄剪影",
-        "【牵手仰望】牵手一起仰望烟火，侧面拍摄",
-        "【亲吻剪影】烟火绽放时亲吻，拍摄剪影",
-        "【依偎观赏】女生靠在男生肩上，一起看烟火",
-        "【比心姿势】两人一起做爱心手势，烟火在背景"
-      ],
-      food: ["烟火当天临时小吃摊", "热饮和小吃"]
-    },
-    {
-      id: "fireworks-2",
-      title: "烟火大会 - 建筑同框",
-      titleJa: "花火大会 - 建物同框",
-      titleEn: "Fireworks - With Buildings",
-      location: "山下公园",
-      icon: "🎇",
-      lat: 35.4437,
-      lng: 139.6501,
-      history: "",
-      special: "💡 将横滨地标塔或红砖仓库放在画面下方1/3处，烟火在上方绽放，形成完美构图！",
-      photoTips: [
-        "建筑同框：横滨地标塔放在画面下方1/3",
-        "红砖前景：以红砖仓库为前景拍摄烟火",
-        "广角镜头：使用广角捕捉更多场景",
-        "三脚架必备：长曝光需要稳定支撑"
-      ],
-      
-      
-      femalePoses: [
-        "【仰望烟火】仰头看烟火，双手合十或做祈祷状，侧面拍摄",
-        "【烟火棒姿势】手持烟火棒，做画圈动作，长曝光拍摄",
-        "【坐姿观赏】坐在草地上，腿部侧放，一手撑地，仰头看烟火",
-        "【欢呼姿势】双手举起欢呼，烟火在背景绽放",
-        "【背影剪影】背对镜头，双手举起，烟火在上方"
-      ],
-      couplePoses: [
-        "【拥抱剪影】面对烟火拥抱，从背后拍摄剪影",
-        "【牵手仰望】牵手一起仰望烟火，侧面拍摄",
-        "【亲吻剪影】烟火绽放时亲吻，拍摄剪影",
-        "【依偎观赏】女生靠在男生肩上，一起看烟火",
-        "【比心姿势】两人一起做爱心手势，烟火在背景"
-      ],
-      food: []
-    },
-    {
-      id: "fireworks-3",
-      title: "烟火大会 - 情侣剪影",
-      titleJa: "花火大会 - カップルシルエット",
-      titleEn: "Fireworks - Couple Silhouette",
-      location: "山下公园",
-      icon: "💑",
-      lat: 35.4437,
-      lng: 139.6501,
-      history: "",
-      special: "💡 让情侣站在前景，背对镜头，拍摄烟火下的剪影。这是最浪漫的烟火照片！",
-      photoTips: [
-        "剪影拍摄：情侣站在前景，背对镜头",
-        "烟火背景：以绽放的烟火为背景",
-        "依偎姿势：情侣依偎或牵手的姿势",
-        "逆光拍摄：利用烟火的光线形成剪影效果"
-      ],
-      
-      
-      femalePoses: [
-        "【仰望烟火】仰头看烟火，双手合十或做祈祷状，侧面拍摄",
-        "【烟火棒姿势】手持烟火棒，做画圈动作，长曝光拍摄",
-        "【坐姿观赏】坐在草地上，腿部侧放，一手撑地，仰头看烟火",
-        "【欢呼姿势】双手举起欢呼，烟火在背景绽放",
-        "【背影剪影】背对镜头，双手举起，烟火在上方"
-      ],
-      couplePoses: [
-        "【拥抱剪影】面对烟火拥抱，从背后拍摄剪影",
-        "【牵手仰望】牵手一起仰望烟火，侧面拍摄",
-        "【亲吻剪影】烟火绽放时亲吻，拍摄剪影",
-        "【依偎观赏】女生靠在男生肩上，一起看烟火",
-        "【比心姿势】两人一起做爱心手势，烟火在背景"
-      ],
-      food: []
-    },
-    {
-      id: "osanbashi",
-      title: "大栈桥",
-      titleJa: "大さん橋",
-      titleEn: "Osanbashi Pier",
-      location: "横滨港",
-      icon: "🌉",
-      lat: 35.4507,
-      lng: 139.6475,
-      history: "横滨港的国际客船码头，建于1894年。现在的建筑是2002年重建，屋顶是开放式木质甲板，可以360度欣赏横滨港景。",
-      special: "💡 木质甲板超级出片！180度全景视野，可以拍摄烟火全貌。白天和夜晚都很美！",
-      photoTips: [
-        "木质甲板：利用波浪形木质甲板拍摄时尚照片",
-        "全景视野：180度拍摄横滨港全景",
-        "夜景：以横滨建筑灯光和摩天轮为背景",
-        "情侣照：在甲板上拍摄浪漫情侣照"
-      ],
-      
-      
-      femalePoses: [
-        "【木质甲板】站在波浪形木质甲板上，顺着曲线站立，展现身体线条",
-        "【全景拍摄】站在甲板中央，双手展开，360度海景在背景",
-        "【坐姿拍摄】坐在甲板上，腿部伸直，一手撑地，看向大海",
-        "【夜景姿势】夜晚灯光下，一手轻触脸颊，摩天轮在背景",
-        "【行走姿势】沿着甲板曲线行走，裙摆飘动，抓拍动态"
-      ],
-      couplePoses: [
-        "【甲板拥抱】在木质甲板上拥抱，海景在背景",
-        "【牵手漫步】牵手沿着甲板曲线漫步，从背后拍摄",
-        "【坐姿合影】两人坐在甲板上，女生靠在男生肩上",
-        "【夜景亲吻】夜晚摩天轮灯光下亲吻，侧面拍摄",
-        "【全景合影】站在甲板中央，女生在前，男生从背后环抱"
-      ],
-      food: ["大栈桥码头咖啡厅"]
-    },
-    {
-      id: "zounohana",
-      title: "象鼻公园",
-      titleJa: "象の鼻パーク",
-      titleEn: "Zou-no-Hana Park",
-      location: "横滨港",
-      icon: "🐘",
-      lat: 35.4495,
-      lng: 139.6445,
-      history: "横滨港的发源地，修复后的历史码头。因形状像大象鼻子而得名。是横滨开港的起点，具有重要历史意义。",
-      special: "💡 这里比较安静，适合情侣边聊天边看夕阳西下。晚上所有灯光亮起来超美！",
-      photoTips: [
-        "夕阳西下：傍晚拍摄夕阳和海景",
-        "夜景：夜晚灯光下的码头",
-        "情侣照：安静的环境适合拍摄亲密照片",
-        "历史感：拍摄修复后的历史码头建筑"
-      ],
-      food: []
-    },
-    {
-      id: "marine-walk",
-      title: "Marine & Walk 购物街",
-      titleJa: "MARINE & WALK",
-      titleEn: "Marine & Walk",
-      location: "横滨港",
-      icon: "🛍️",
-      lat: 35.4545,
-      lng: 139.6438,
-      history: "2016年开业的开放式海滨购物街，以加州海滨小镇为设计理念。是横滨新兴的时尚购物和约会圣地。",
-      special: "💡 ins风满满的商店和咖啡厅！白色建筑配蓝天超出片。情侣约会圣地，很多网红店！",
-      photoTips: [
-        "ins风：拍摄白色建筑和时尚店铺",
-        "咖啡厅：在海景咖啡厅拍摄下午茶",
-        "购物街：拍摄开放式购物街的氛围",
-        "海景背景：以海景为背景拍摄时尚照片"
-      ],
-      
-      
-      femalePoses: [
-        "【时尚街拍】在购物街行走，一手提包，一手插口袋，表情自信",
-        "【橱窗前】站在时尚店铺橱窗前，侧身看向橱窗，一手轻触玻璃",
-        "【咖啡厅姿势】坐在露天咖啡厅，腿部交叉，一手拿咖啡杯",
-        "【海景背景】站在购物街尽头，海景在背景，双脚交叉站立",
-        "【购物袋姿势】双手提着购物袋，开心微笑，展示购物成果"
-      ],
-      couplePoses: [
-        "【牵手逛街】牵手在购物街漫步，从背后拍摄",
-        "【咖啡厅合影】坐在咖啡厅，两人面对面，桌上有咖啡和甜点",
-        "【橱窗前互动】一起看橱窗，女生指向某个商品，男生看过去",
-        "【购物互动】男生帮女生提购物袋，女生挽着男生手臂",
-        "【海景拥抱】在购物街尽头拥抱，海景在背景"
-      ],
-      food: ["Bills松饼", "海景咖啡厅", "西式简餐"]
-    },
-    {
-      id: "cosmo-world",
-      title: "横滨宇宙世界摩天轮",
-      titleJa: "よこはまコスモワールド",
-      titleEn: "Yokohama Cosmo World",
-      location: "港未来",
-      icon: "🎡",
-      lat: 35.4553,
-      lng: 139.6364,
-      history: "1989年开业的游乐园，地标性的摩天轮高112.5米，是世界上最大的时钟摩天轮。夜晚彩灯变换超级梦幻。",
-      special: "💡 摩天轮夜晚会变换不同颜色的灯光！情侣必打卡。可以从高空俯瞰烟火（需提前预约）。",
-      photoTips: [
-        "夜景：拍摄彩灯变换的摩天轮",
-        "倒影：拍摄摩天轮在水面的倒影",
-        "情侣照：以摩天轮为背景拍摄浪漫照片",
-        "高空视角：在摩天轮上俯瞰横滨夜景"
-      ],
-      food: ["游乐园小吃"]
-    },
-    {
-      id: "chinatown",
-      title: "横滨中华街",
-      titleJa: "中華街",
-      titleEn: "Yokohama Chinatown",
-      location: "横滨",
-      icon: "🏮",
-      lat: 35.4433,
-      lng: 139.6458,
-      history: "日本最大的中华街，形成于1859年横滨开港后。有600多家中餐馆和商店，是日本华人文化的重要据点。",
-      special: "💡 四个牌楼分别代表东南西北！夜晚灯光全开最美。推荐萬珍楼（粤菜）和聘珍楼（点心）。",
-      photoTips: [
-        "牌楼：拍摄中华街标志性牌楼",
-        "夜景：夜晚彩灯下的中华街",
-        "美食：拍摄特色中餐和点心",
-        "街景：拍摄热闹的街道氛围"
-      ],
-      food: ["萬珍楼（粤菜）", "聘珍楼（点心）", "横滨大饭店", "中华料理"]
-    },
-    {
-      id: "return-kimono",
-      title: "归还和服",
-      titleJa: "着物返却",
-      titleEn: "Return Kimono",
-      location: "浅草",
-      icon: "👘",
-      lat: 35.7106,
-      lng: 139.7967,
-      history: "",
-      special: "💡 确保20:00前归还！从横滨返回约45分钟，预留足够时间。",
-      photoTips: [],
-      food: []
-    },
-    {
-      id: "skytree",
-      title: "东京晴空塔夜景",
-      titleJa: "東京スカイツリー",
-      titleEn: "Tokyo Skytree",
-      location: "晴空塔",
-      icon: "🌃",
-      lat: 35.7101,
-      lng: 139.8107,
-      history: "2012年建成，高634米，是世界第二高的建筑。数字634在日语中发音类似'武藏'，是东京的古称。",
-      special: "💡 19:00后有3D灯光秀！350米和450米两个观景台。SKYTREE CAFE可以边用餐边看夜景。冬季限定灯饰最美！",
-      photoTips: [
-        "观景台：从350米天望甲板拍摄东京夜景",
-        "落地窗：站在大型落地窗前拍摄",
-        "灯光秀：拍摄3D灯光秀",
-        "远景：从浅草周边拍摄完整的晴空塔"
-      ],
-      food: ["SKYTREE CAFE", "晴空塔美食街", "Tokyo Solamachi"]
+        "【床上依偎】两人躺在床上，一起看手机中的照片",
+        "【整理照片】两人坐在床上，一起整理今天的照片",
+        "【泡脚放松】两人一起泡脚，拍摄脚部特写",
+        "【晚安合影】两人在床上自拍，做晚安手势",
+        "【窗边拥抱】站在窗边拥抱，看向窗外夜景，背影拍摄"
+      ]
     }
   ];
 
+  const routeSteps = [
+    { from: "上野APA酒店", to: "上野集合点", method: "步行", time: "5-10分钟", icon: "🚶" },
+    { from: "上野集合点", to: "富士山五合目", method: "旅游大巴", time: "2.5小时", icon: "🚌" },
+    { from: "富士山五合目", to: "忍野八海", method: "旅游大巴", time: "30分钟", icon: "🚌" },
+    { from: "忍野八海", to: "河口湖", method: "旅游大巴", time: "20分钟", icon: "🚌" },
+    { from: "河口湖", to: "上野集合点", method: "旅游大巴", time: "2.5小时", icon: "🚌" },
+    { from: "上野集合点", to: "上野APA酒店", method: "步行", time: "5-10分钟", icon: "🚶" }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-purple-200 sticky top-0 z-50">
-        <div className="container py-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100">
+      {/* 顶部导航栏 */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b-2 border-pink-200 shadow-sm">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-purple-600 flex items-center gap-2">
-                <Heart className="w-8 h-8 fill-pink-400 text-pink-400" />
+            <div className="flex items-center gap-3">
+              <Heart className="w-6 h-6 text-pink-500 fill-pink-500" />
+              <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
                 东京浪漫之旅
               </h1>
-              <p className="text-sm text-purple-600/70 mt-1">2/6 - 2/11 · 库洛米风格行程</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-                <Star className="w-3 h-3 mr-1 fill-purple-400" />
-                第2天
-              </Badge>
-            </div>
+            <p className="text-sm text-gray-600">2/6 - 2/11 · 库洛米风格行程</p>
           </div>
         </div>
       </header>
 
-      <main className="container py-8">
-        {/* Progress Card */}
-        <Card className="mb-6 border-purple-200 shadow-lg">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        {/* 日期标题 */}
+        <div className="text-center mb-8">
+          <Badge variant="outline" className="mb-4 text-lg px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none">
+            <Mountain className="w-5 h-5 mr-2" />
+            第3天
+          </Badge>
+          <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            富士山一日游
+          </h2>
+          <p className="text-gray-600 text-lg">
+            <JapaneseText zh="2月8日（周日）" ja="2月8日（日曜日）" en="Feb 8 (Sun)" />
+          </p>
+          <p className="text-purple-600 font-medium mt-2">
+            富士山五合目 → 忍野八海 → 河口湖
+          </p>
+        </div>
+
+        {/* 今日完成度 */}
+        <Card className="mb-6 border-2 border-pink-200 bg-white/80 backdrop-blur">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-purple-600" />
+            <CardTitle className="flex items-center gap-2 text-pink-600">
+              <CheckCircle2 className="w-5 h-5" />
               今日完成度
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm text-gray-600">
                 <span>已完成 {checkedSpots.size} / {spots.length} 个打卡点</span>
-                <span className="text-purple-600 font-semibold">{Math.round(progress)}%</span>
+                <span>{Math.round(progress)}%</span>
               </div>
-              <Progress value={progress} className="h-2" />
+              <Progress value={progress} className="h-3" />
             </div>
           </CardContent>
         </Card>
 
-        {/* Weather Card */}
-        <Card className="mb-6 border-purple-200 shadow-lg bg-gradient-to-r from-blue-50 to-purple-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Cloud className="w-5 h-5 text-blue-500" />
-              2月7日天气
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-4xl font-bold text-blue-600">13°C</div>
-                <div className="text-sm text-gray-600 mt-1">晴天</div>
+        {/* 天气和重要提醒 */}
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <Card className="border-2 border-blue-200 bg-white/80 backdrop-blur">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-blue-600">
+                <Cloud className="w-5 h-5" />
+                2月8日天气
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="text-3xl font-bold text-blue-600">8°C</div>
+                <p className="text-gray-600">晴天（富士山五合目约-5℃）</p>
+                <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                  <div>💧 湿度: 45%</div>
+                  <div>🌬️ 风速: 4m/s</div>
+                </div>
+                <p className="text-purple-600 font-medium mt-2">建议穿搭：羽绒服+保暖内衣+围巾+手套</p>
               </div>
-              <div className="text-right text-sm text-gray-600">
-                <div>💧 湿度: 55%</div>
-                <div>🌬️ 风速: 2m/s</div>
-                <div className="mt-2 text-purple-600 font-medium">建议穿搭：和服+羽织外套</div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-yellow-50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-orange-600">
+                <AlertCircle className="w-5 h-5" />
+                重要提醒
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-orange-500">●</span>
+                <span><strong>07:00出发</strong> - 提前15分钟到达集合点</span>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex items-start gap-2">
+                <span className="text-orange-500">●</span>
+                <span><strong>携带护照</strong> - 部分景点需要出示</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-orange-500">●</span>
+                <span><strong>防寒保暖</strong> - 五合目气温约-5℃</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-orange-500">●</span>
+                <span><strong>高原反应</strong> - 慢慢行动，不要剧烈运动</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-        {/* Important Reminders */}
-        <Card className="mb-6 border-orange-200 bg-orange-50 shadow-lg">
+        {/* 今日亮点 */}
+        <Card className="mb-6 border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-orange-700">
-              <AlertCircle className="w-5 h-5" />
-              重要提醒
+            <CardTitle className="flex items-center gap-2 text-purple-600">
+              <Sparkles className="w-5 h-5" />
+              今日亮点：富士山绝景之旅
             </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-orange-500 mt-2" />
-              <p className="text-sm text-orange-800">
-                <strong>和服租赁</strong> - 建议提前预约，20:00前归还
-              </p>
-            </div>
-            <div className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-orange-500 mt-2" />
-              <p className="text-sm text-orange-800">
-                <strong>横滨烟火大会</strong> - 19:00-19:05，18:30前占位
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Highlight Card for Fireworks */}
-        <Card className="mb-6 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 shadow-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-pink-600">
-              <Sparkles className="w-6 h-6" />
-              今日亮点：横滨烟火大会
-            </CardTitle>
-            <CardDescription className="text-pink-700">
-              19:00-19:05 · 约3,000发烟火 · 山下公园最佳观赏点
+            <CardDescription className="text-purple-600 font-medium">
+              07:30-19:30 · 跟团一日游 · 富士山五合目+忍野八海+河口湖
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="p-3 bg-white rounded-lg">
-                <h4 className="font-semibold text-purple-900 mb-2">最佳观赏点</h4>
-                <p className="text-sm text-gray-700">
-                  <strong>山下公园</strong>（推荐★★★★★）- 正对发射点，可拍摄烟火+海面倒影+横滨地标塔同框
-                </p>
-              </div>
-              <div className="p-3 bg-white rounded-lg">
-                <h4 className="font-semibold text-purple-900 mb-2">占位策略</h4>
-                <p className="text-sm text-gray-700">
-                  18:00-18:30抵达，选择玫瑰园区域，既能拍到烟火，又能以横滨地标塔为背景
-                </p>
-              </div>
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">📸 必拍机位</h4>
+              <p className="text-sm text-gray-600">
+                <strong>富士山五合目</strong>（推荐★★★★★）- 海拔2,305米，可以近距离观赏富士山山顶和云海<br/>
+                <strong>忍野八海</strong>（推荐★★★★★）- 清澈池塘倒映富士山，日式田园风光<br/>
+                <strong>河口湖</strong>（推荐★★★★★）- 湖面倒影+红色鸟居+富士山三者同框
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">⚠️ 注意事项</h4>
+              <p className="text-sm text-gray-600">
+                提前准备好保暖衣物、相机、充电宝、零食和水。五合目气温低，注意防寒。高原地区可能有轻微高原反应，慢慢行动。
+              </p>
             </div>
           </CardContent>
         </Card>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="spots" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-purple-100">
-            <TabsTrigger value="spots" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
-              <MapPin className="w-4 h-4 mr-2" />
+        {/* 主要内容标签页 */}
+        <Tabs defaultValue="spots" className="mb-8">
+          <TabsList className="grid w-full grid-cols-3 bg-pink-100">
+            <TabsTrigger value="spots" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              <Camera className="w-4 h-4 mr-2" />
               景点打卡
             </TabsTrigger>
-            <TabsTrigger value="subway" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
-              <Train className="w-4 h-4 mr-2" />
-              地铁指引
-            </TabsTrigger>
-            <TabsTrigger value="route" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
-              <Navigation className="w-4 h-4 mr-2" />
+            <TabsTrigger value="route" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              <Bus className="w-4 h-4 mr-2" />
               路线导航
+            </TabsTrigger>
+            <TabsTrigger value="tips" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              <Info className="w-4 h-4 mr-2" />
+              旅行贴士
             </TabsTrigger>
           </TabsList>
 
-          {/* Spots Tab */}
-          <TabsContent value="spots" className="space-y-4">
-            {spots.map((spot) => (
-              <Card
-                key={spot.id}
-                className={`border-2 transition-all ${
-                  checkedSpots.has(spot.id)
-                    ? "bg-green-50 border-green-300"
-                    : "bg-white border-purple-200 hover:border-purple-300"
-                }`}
-              >
+          {/* 景点打卡标签页 */}
+          <TabsContent value="spots" className="space-y-6 mt-6">
+            {spots.map((spot, index) => (
+              <Card key={spot.id} className="border-2 border-pink-200 hover:border-pink-400 transition-all hover:shadow-lg bg-white/90 backdrop-blur">
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3 flex-1">
-                      <Checkbox
-                        id={spot.id}
-                        checked={checkedSpots.has(spot.id)}
-                        onCheckedChange={() => toggleSpot(spot.id)}
-                        className="mt-1"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl">{spot.icon}</span>
-                          <CardTitle className="text-lg">{spot.title}</CardTitle>
-                          {spot.titleJa && (
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-4xl">{spot.icon}</span>
+                        <div>
+                          <CardTitle className="text-2xl text-gray-800 flex items-center gap-2">
+                            {spot.title}
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => speakJapanese(spot.titleJa)}
-                              className="h-6 w-6 p-0"
+                              className="hover:bg-pink-100"
                             >
-                              <Volume2 className="w-4 h-4 text-purple-600" />
+                              <Volume2 className="w-4 h-4 text-pink-500" />
                             </Button>
-                          )}
+                          </CardTitle>
+                          <CardDescription className="text-base">
+                            <JapaneseText zh={spot.location} ja={spot.titleJa} en={spot.titleEn} />
+                          </CardDescription>
+                          <Badge variant="outline" className="mt-1 text-purple-600 border-purple-300">
+                            <Clock className="w-3 h-3 mr-1" />
+                            {spot.time}
+                          </Badge>
                         </div>
-                        <CardDescription className="mt-1">{spot.location}</CardDescription>
                       </div>
                     </div>
-                    {spot.lat && spot.lng && (
+                    <div className="flex flex-col items-end gap-2">
+                      <Checkbox
+                        id={spot.id}
+                        checked={checkedSpots.has(spot.id)}
+                        onCheckedChange={() => toggleSpot(spot.id)}
+                        className="w-6 h-6 border-2 border-pink-400 data-[state=checked]:bg-pink-500"
+                      />
                       <Button
-                        variant="outline"
                         size="sm"
+                        variant="outline"
                         onClick={() => openNavigation(spot.title, spot.lat, spot.lng)}
-                        className="flex items-center gap-1"
+                        className="border-purple-300 text-purple-600 hover:bg-purple-50"
                       >
-                        <Navigation className="w-4 h-4" />
+                        <Navigation className="w-4 h-4 mr-1" />
                         导航
                       </Button>
-                    )}
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {spot.history && (
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
-                        <Info className="w-4 h-4" />
-                        历史故事
-                      </h4>
-                      <p className="text-sm text-gray-700">{spot.history}</p>
-                    </div>
-                  )}
+                  {/* 历史故事 */}
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                      <Info className="w-4 h-4" />
+                      历史故事
+                    </h4>
+                    <p className="text-sm text-gray-700 leading-relaxed">{spot.history}</p>
+                  </div>
 
-                  {spot.special && (
-                    <div className="p-3 bg-yellow-50 rounded-lg border-2 border-yellow-200">
-                      <h4 className="font-semibold text-yellow-900 mb-2 flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        特别说明
-                      </h4>
-                      <p className="text-sm text-gray-700">{spot.special}</p>
-                    </div>
-                  )}
+                  {/* 特别说明 */}
+                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <h4 className="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
+                      <Star className="w-4 h-4" />
+                      特别说明
+                    </h4>
+                    <p className="text-sm text-gray-700 leading-relaxed">{spot.special}</p>
+                  </div>
 
-                  {spot.photoTips.length > 0 && (
-                    <div className="p-3 bg-purple-50 rounded-lg">
-                      <h4 className="font-semibold text-purple-900 mb-2 flex items-center gap-2">
-                        <Camera className="w-4 h-4" />
-                        拍照技巧
-                      </h4>
-                      <ul className="space-y-2">
-                        {spot.photoTips.map((tip, index) => (
-                          <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-purple-600 font-bold">•</span>
-                            <span>{tip}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {/* 拍照技巧 */}
+                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
+                      <Camera className="w-4 h-4" />
+                      拍照技巧
+                    </h4>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      {spot.photoTips.map((tip, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-purple-500 mt-1">•</span>
+                          <span>{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                  {spot.femalePoses && spot.femalePoses.length > 0 && (
-                    <div className="p-3 bg-pink-50 rounded-lg border-2 border-pink-200">
-                      <h4 className="font-semibold text-pink-900 mb-2 flex items-center gap-2">
-                        <span className="text-xl">👩</span>
-                        女生拍照姿势（重点）
-                      </h4>
-                      <ul className="space-y-2">
-                        {spot.femalePoses.map((pose, index) => (
-                          <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-pink-600 font-bold">•</span>
-                            <span>{pose}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {/* 女生拍照姿势 */}
+                  <div className="bg-pink-50 p-4 rounded-lg border-2 border-pink-300">
+                    <h4 className="font-semibold text-pink-800 mb-2 flex items-center gap-2">
+                      <span className="text-lg">👩</span>
+                      女生拍照姿势（重点）
+                    </h4>
+                    <ul className="space-y-2 text-sm text-gray-700">
+                      {spot.femalePoses.map((pose, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-pink-500 font-bold">•</span>
+                          <span>{pose}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                  {spot.couplePoses && spot.couplePoses.length > 0 && (
-                    <div className="p-3 bg-red-50 rounded-lg border-2 border-red-200">
-                      <h4 className="font-semibold text-red-900 mb-2 flex items-center gap-2">
-                        <span className="text-xl">💑</span>
-                        情侣互动姿势
-                      </h4>
-                      <ul className="space-y-2">
-                        {spot.couplePoses.map((pose, index) => (
-                          <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-red-600 font-bold">•</span>
-                            <span>{pose}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {/* 情侣互动姿势 */}
+                  <div className="bg-rose-50 p-4 rounded-lg border-2 border-rose-300">
+                    <h4 className="font-semibold text-rose-800 mb-2 flex items-center gap-2">
+                      <span className="text-lg">💑</span>
+                      情侣互动姿势
+                    </h4>
+                    <ul className="space-y-2 text-sm text-gray-700">
+                      {spot.couplePoses.map((pose, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-rose-500 font-bold">•</span>
+                          <span>{pose}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                  {spot.food.length > 0 && (
-                    <div className="p-3 bg-pink-50 rounded-lg">
-                      <h4 className="font-semibold text-pink-900 mb-2 flex items-center gap-2">
-                        <Utensils className="w-4 h-4" />
-                        美食推荐
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {spot.food.map((food, index) => (
-                          <Badge key={index} className="bg-pink-200 text-pink-800">
-                            {food}
-                          </Badge>
-                        ))}
-                      </div>
+                  {/* 美食推荐 */}
+                  <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 className="font-semibold text-orange-800 mb-2 flex items-center gap-2">
+                      <Utensils className="w-4 h-4" />
+                      美食推荐
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {spot.food.map((item, i) => (
+                        <Badge key={i} variant="secondary" className="bg-orange-100 text-orange-700 border-orange-300">
+                          {item}
+                        </Badge>
+                      ))}
                     </div>
-                  )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </TabsContent>
 
-          {/* Subway Tab */}
-          <TabsContent value="subway" className="space-y-4">
-            {/* 东京地铁线路图 */}
-            <Card className="border-purple-200 shadow-lg">
+          {/* 路线导航标签页 */}
+          <TabsContent value="route" className="mt-6">
+            <Card className="border-2 border-purple-200 bg-white/90 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-purple-600" />
-                  东京地铁线路图
-                </CardTitle>
-                <CardDescription>
-                  点击图片可放大查看详细路线
-                </CardDescription>
+                <CardTitle className="text-purple-600">2月8日路线图</CardTitle>
+                <CardDescription>富士山一日游完整路线 / 2月8日跟团行程</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="relative w-full overflow-hidden rounded-lg border-2 border-purple-200">
-                  <img 
-                    src="/images/tokyo-subway-map.jpg" 
-                    alt="东京地铁线路图" 
-                    className="w-full h-auto cursor-pointer hover:scale-105 transition-transform duration-300"
-                    onClick={() => window.open('/images/tokyo-subway-map.jpg', '_blank')}
-                  />
+                <div className="space-y-4">
+                  {routeSteps.map((step, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="flex flex-col items-center">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                          {index + 1}
+                        </div>
+                        {index < routeSteps.length - 1 && (
+                          <div className="w-1 h-16 bg-gradient-to-b from-pink-300 to-purple-300 my-2"></div>
+                        )}
+                      </div>
+                      <div className="flex-1 bg-gradient-to-r from-pink-50 to-purple-50 p-4 rounded-lg border border-purple-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-semibold text-gray-800">{step.from}</span>
+                          <span className="text-2xl">{step.icon}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Badge variant="outline" className="bg-white">{step.method}</Badge>
+                          <span>→</span>
+                          <span className="font-medium">{step.time}</span>
+                        </div>
+                        <div className="mt-2 text-sm font-medium text-purple-600">
+                          ↓ {step.to}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <h4 className="font-semibold text-yellow-900 mb-2 flex items-center gap-2">
-                    <Info className="w-4 h-4" />
-                    使用提示
-                  </h4>
-                  <ul className="space-y-1 text-sm text-yellow-800">
-                    <li>• 银座线（橙色）：上野 → 浅草</li>
-                    <li>• 都营浅草线（蓝色）：浅草 → 新桥</li>
-                    <li>• 港未来线（红色）：新桥 → 横滨</li>
-                    <li>• 建议购买一日券，可无限次乘坐</li>
+
+                <div className="mt-6 p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-lg border-2 border-purple-300">
+                  <h4 className="font-semibold text-purple-800 mb-2">路线包含在内（跟团）</h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      往返旅游大巴交通
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      富士山五合目入场
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      忍野八海游览
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      河口湖自由活动时间
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      中文导游讲解
+                    </li>
                   </ul>
                 </div>
               </CardContent>
             </Card>
-
-            <Card className="border-purple-200 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Train className="w-5 h-5 text-purple-600" />
-                  上野 → 浅草（银座线）
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                    <h4 className="font-semibold text-orange-900 mb-2">线路信息</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">出发站：</span>
-                        <span className="font-medium">上野站</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">到达站：</span>
-                        <span className="font-medium">浅草站</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">方向：</span>
-                        <span className="font-medium text-orange-600">浅草方向</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">站数：</span>
-                        <span className="font-medium text-orange-600">5站</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <h4 className="font-semibold text-purple-900 mb-2">乘车要点</h4>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <span>银座线是橙色线路</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <span>从1号出口出站最近</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <span>车程约8分钟</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-purple-200 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Train className="w-5 h-5 text-blue-600" />
-                  浅草 → 横滨（都营浅草线+港未来线）
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h4 className="font-semibold text-blue-900 mb-2">线路信息</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">出发站：</span>
-                        <span className="font-medium">浅草站</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">换乘站：</span>
-                        <span className="font-medium">新桥站</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">到达站：</span>
-                        <span className="font-medium">元町·中华街站</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">总时间：</span>
-                        <span className="font-medium text-blue-600">约50分钟</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <h4 className="font-semibold text-purple-900 mb-2">换乘指引</h4>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <span>浅草站乘都营浅草线往西马込方向</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <span>新桥站站内换乘港未来线</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                        <span>元町·中华街站A1出口出站</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <h4 className="font-semibold text-yellow-900 mb-2 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    温馨提示
-                  </h4>
-                  <p className="text-sm text-yellow-800">
-                    新桥站换乘时跟随"港未来线"指示牌，换乘通道约5分钟步行距离
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
-          {/* Route Tab */}
-          <TabsContent value="route" className="space-y-4">
-            <VisualRouteMap
-              title="浅草寺 → 横滨港 → 晴空塔"
-              date="2/7"
-              steps={[
-                {
-                  id: "asakusa-station",
-                  icon: "🚇",
-                  title: "浅草站",
-                  subtitle: "银座线1号出口",
-                  details: "从上野APA酒店出发，乘坐银座线到5站到浅草站，约8分钟。从1号出口出站步行1分钟到和服租赁店。",
-                  lat: 35.7106,
-                  lng: 139.7967
-                },
-                {
-                  id: "kaminarimon",
-                  icon: "⛩️",
-                  title: "雷门",
-                  subtitle: "早上7点前人最少",
-                  details: "从和服店步行2分钟到达雷门。建议在灯笼正下方仰拍，或从侧面45度拍摄风神雷神雕像。",
-                  lat: 35.7106,
-                  lng: 139.7967
-                },
-                {
-                  id: "nakamise",
-                  icon: "🏮",
-                  title: "仲见世大道",
-                  subtitle: "约250米，89家店铺",
-                  details: "穿和服在商店街中央拍摄背影，营造穿越感。働晚时分拍摄，既有自然光又有灯笼光。推荐木村家人形烧、舟和芋羊羹。",
-                  lat: 35.7115,
-                  lng: 139.7967
-                },
-                {
-                  id: "sensoji",
-                  icon: "🏯",
-                  title: "浅草寺本堂",
-                  subtitle: "东京最古老寺庙",
-                  details: "拍摄参拜、抽签或往香炉扇烟的瞬间。本堂前的大香炉烟雾据说能治病！抽签100日元一次。",
-                  lat: 35.7148,
-                  lng: 139.7967
-                },
-                {
-                  id: "yokohama-transit",
-                  icon: "🚆",
-                  title: "前往横滨",
-                  subtitle: "都营浅草线+港未来线",
-                  details: "浅草站乘都营浅草线往西马込方向，在新桥站换乘港未来线，到元町·中华街站A1出口。总时间约50分钟。",
-                  lat: 35.4433,
-                  lng: 139.6458
-                },
-                {
-                  id: "red-brick",
-                  icon: "🏛️",
-                  title: "横滨红砖仓库",
-                  subtitle: "明治大正时期建筑",
-                  details: "从元町·中华街站A1出口步行10分钟。働晚时分拍摄红砖建筑，光线柔和。1号2号馆之间的广场是最佳拍照点！",
-                  lat: 35.4532,
-                  lng: 139.6425
-                },
-                {
-                  id: "yamashita-park",
-                  icon: "🌆",
-                  title: "山下公园",
-                  subtitle: "烟火大会最佳观赏点",
-                  details: "18:00-18:30抵达占位，选择玫瑰园区域。19:00-19:05烟火表演，烟火占画面2/3，海面倒影呠1/3。记得带三脚架！",
-                  lat: 35.4437,
-                  lng: 139.6501
-                },
-                {
-                  id: "return-kimono",
-                  icon: "👘",
-                  title: "归还和服",
-                  subtitle: "确保20:00前到达",
-                  details: "从横滨返回浅草，乘坐港未来线→新桥站→换乘都营浅草线→浅草站1号出口，约45分钟。",
-                  lat: 35.7106,
-                  lng: 139.7967
-                },
-                {
-                  id: "skytree",
-                  icon: "🌃",
-                  title: "东京晴空塔",
-                  subtitle: "19:00后有3D灯光秀",
-                  details: "从浅草站乘坐东武晴空塔线1站到东京晴空塔站，A出口步行3分钟。350米和450米两个观景台，SKYTREE CAFE可以边用餐边看夜景。",
-                  lat: 35.7101,
-                  lng: 139.8107
-                }
-              ]}
-            />
+          {/* 旅行贴士标签页 */}
+          <TabsContent value="tips" className="mt-6">
+            <div className="space-y-4">
+              <Card className="border-2 border-blue-200 bg-white/90 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-blue-600">出发前准备</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm text-gray-700">
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <span><strong>护照</strong> - 务必携带，部分景点需要出示</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <span><strong>保暖衣物</strong> - 羽绒服、围巾、手套、保暖内衣</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <span><strong>摄影设备</strong> - 相机、手机、充电宝、备用电池</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <span><strong>零食和水</strong> - 车上和景点可能需要</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <span><strong>晕车药</strong> - 如果容易晕车，提前准备</span>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card className="border-purple-200 shadow-lg">
-              <CardHeader>
-                <CardTitle>今日路线图</CardTitle>
-                <CardDescription>中日英三语对照，方便在日本使用</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="relative">
-                  <img 
-                    src="/images/cute_kuromi_map_2_7.png" 
-                    alt="2月7日路线图 - 中日英三语对照" 
-                    className="w-full rounded-lg border-2 border-purple-200 shadow-lg"
-                  />
-                  <p className="text-sm text-gray-500 mt-2 text-center">
-                    路线图包含中文、日文和英文说明，方便在日本使用
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              <Card className="border-2 border-orange-200 bg-white/90 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-orange-600">拍照建议</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm text-gray-700">
+                  <div className="flex items-start gap-2">
+                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <span><strong>五合目</strong> - 展望台全景、神社鸟居、雪景特写</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <span><strong>忍野八海</strong> - 池塘倒影、茅草屋、清澈池水</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <span><strong>河口湖</strong> - 湖畔倒影、红色鸟居、湖边栏杆</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Camera className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <span><strong>最佳时间</strong> - 上午10-12点光线最好，下午3-5点适合拍日落</span>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card className="border-purple-200 shadow-lg">
-              <CardHeader>
-                <CardTitle>行程时间安排</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                    <Clock className="w-5 h-5 text-purple-600" />
-                    <div>
-                      <div className="font-semibold">09:30-11:00 浅草和服体验</div>
-                      <div className="text-sm text-gray-600">雷门、仲见世大道、浅草寺</div>
-                    </div>
+              <Card className="border-2 border-red-200 bg-white/90 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-red-600">注意事项</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm text-gray-700">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <span><strong>高原反应</strong> - 五合目海拔2,305米，可能有轻微高原反应，慢慢行动</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                    <Clock className="w-5 h-5 text-purple-600" />
-                    <div>
-                      <div className="font-semibold">16:00-18:00 横滨港浪漫之旅</div>
-                      <div className="text-sm text-gray-600">红砖仓库、山下公园、象鼻公园</div>
-                    </div>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <span><strong>气温低</strong> - 五合目气温约-5℃，务必穿好保暖衣物</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-pink-50 rounded-lg border-2 border-pink-200">
-                    <Sparkles className="w-5 h-5 text-pink-600" />
-                    <div>
-                      <div className="font-semibold">18:30-19:05 横滨烟火大会</div>
-                      <div className="text-sm text-gray-600">18:30前占位，19:00-19:05烟火表演</div>
-                    </div>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <span><strong>天气变化</strong> - 山区天气多变，可能看不到富士山全貌</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                    <Clock className="w-5 h-5 text-purple-600" />
-                    <div>
-                      <div className="font-semibold">20:00-21:00 晴空塔夜景</div>
-                      <div className="text-sm text-gray-600">归还和服后前往晴空塔</div>
-                    </div>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <span><strong>时间紧凑</strong> - 跟团行程时间固定，注意不要掉队</span>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <span><strong>纪念品</strong> - 五合目邮局可以寄明信片，盖富士山纪念章</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-green-200 bg-white/90 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-green-600">预算参考</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm text-gray-700">
+                  <div className="flex justify-between items-center">
+                    <span>富士山一日游团费</span>
+                    <span className="font-semibold text-green-600">¥8,000-12,000日元/人</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>午餐（团餐包含）</span>
+                    <span className="font-semibold text-green-600">已包含</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>零食和饮料</span>
+                    <span className="font-semibold text-green-600">¥1,000日元</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>纪念品和明信片</span>
+                    <span className="font-semibold text-green-600">¥2,000-3,000日元</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>晚餐（上野）</span>
+                    <span className="font-semibold text-green-600">¥2,000-3,000日元</span>
+                  </div>
+                  <div className="border-t-2 border-green-300 pt-2 mt-2 flex justify-between items-center font-bold">
+                    <span>预计总花费（2人）</span>
+                    <span className="text-lg text-green-600">¥22,000-30,000日元</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
 
-        {/* Bottom Navigation */}
-        <div className="mt-8 flex justify-between items-center p-4 bg-white rounded-lg border-2 border-purple-200 shadow-lg">
-          <Link href="/">
-            <Button variant="outline">
+        {/* 底部导航 */}
+        <div className="flex justify-between items-center mt-8">
+          <Link href="/day2">
+            <Button variant="outline" className="border-2 border-pink-300 hover:bg-pink-50">
               ← 上一天
             </Button>
           </Link>
-          <span className="text-sm text-gray-600">第2天 / 共6天</span>
-          <Button className="bg-purple-600 hover:bg-purple-700" disabled>
-            下一天 →
-          </Button>
+          <Link href="/day4">
+            <Button className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">
+              下一天 →
+            </Button>
+          </Link>
         </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white/80 backdrop-blur-md border-t border-purple-200 mt-12">
-        <div className="container py-6 text-center text-sm text-gray-600">
-          <p>💜 东京浪漫之旅 · 库洛米风格行程 (2/6-2/11) 💜</p>
-          <p className="mt-1">祝两位旅途愉快！</p>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 }

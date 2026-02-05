@@ -595,10 +595,10 @@ export default function Home() {
             <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
               <CardHeader>
                 <CardTitle className="text-lg">Day 3</CardTitle>
-                <CardDescription>新宿 · 原宿 · 涩谷</CardDescription>
+                <CardDescription>富士山一日游</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600 mb-3">时尚购物线 · 潮流文化</p>
+                <p className="text-sm text-gray-600 mb-3">富士山五合目 · 忍野八海 · 河口湖</p>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
                   查看详情 →
                 </Button>
@@ -610,10 +610,10 @@ export default function Home() {
             <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
               <CardHeader>
                 <CardTitle className="text-lg">Day 4</CardTitle>
-                <CardDescription>银座 · 东京站 · 皇居</CardDescription>
+                <CardDescription>镰仓一日游</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600 mb-3">高端文化线 · 历史建筑</p>
+                <p className="text-sm text-gray-600 mb-3">镰仓高校前 · 长谷寺 · 镰仓大佛</p>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
                   查看详情 →
                 </Button>
@@ -625,10 +625,10 @@ export default function Home() {
             <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
               <CardHeader>
                 <CardTitle className="text-lg">Day 5</CardTitle>
-                <CardDescription>台场 · 六本木</CardDescription>
+                <CardDescription>东京市区精华游</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600 mb-3">现代艺术线 · 海滨风光</p>
+                <p className="text-sm text-gray-600 mb-3">秋叶原 · 银座 · 东京塔 · 六本木</p>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
                   查看详情 →
                 </Button>
@@ -640,10 +640,10 @@ export default function Home() {
             <Card className="border-purple-200 hover:border-purple-400 cursor-pointer transition-all">
               <CardHeader>
                 <CardTitle className="text-lg">Day 6</CardTitle>
-                <CardDescription>秋叶原 · 上野 · 离开</CardDescription>
+                <CardDescription>Live演出 & 新宿涩谷</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600 mb-3">动漫文化线 · 最后购物</p>
+                <p className="text-sm text-gray-600 mb-3">须贺神社 · LIVE · 原宿 · 涩谷</p>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
                   查看详情 →
                 </Button>
