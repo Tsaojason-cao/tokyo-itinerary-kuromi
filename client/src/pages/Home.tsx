@@ -650,6 +650,24 @@ export default function Home() {
               </CardContent>
             </Card>
           </Link>
+
+          <Link href="/phrases">
+            <Card className="border-pink-200 hover:border-pink-400 cursor-pointer transition-all bg-gradient-to-br from-pink-50 to-purple-50">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Volume2 className="w-5 h-5" />
+                  日语常用语
+                </CardTitle>
+                <CardDescription>旅行必备 · 点击发音</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">问候 · 餐厅 · 交通 · 购物 · 紧急</p>
+                <Button className="w-full bg-pink-500 hover:bg-pink-600">
+                  查看详情 →
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
 
         {/* Bottom Navigation */}

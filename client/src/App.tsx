@@ -12,6 +12,7 @@ import Day5 from "./pages/Day5";
 import Day6 from "./pages/Day6";
 import Planner from "./pages/Planner";
 import TestVoice from "./pages/TestVoice";
+import Phrases from "./pages/Phrases";
 
 
 function Router() {
@@ -25,6 +26,7 @@ function Router() {
       <Route path={"/day6"} component={Day6} />
       <Route path={"/planner"} component={Planner} />
       <Route path={"/test-voice"} component={TestVoice} />
+      <Route path={"/phrases"} component={Phrases} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
