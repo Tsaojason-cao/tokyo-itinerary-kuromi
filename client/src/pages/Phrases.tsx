@@ -31,7 +31,12 @@ export default function Phrases() {
       { zh: "这个多少钱？", ja: "これはいくらですか", romaji: "Kore wa ikura desu ka" },
       { zh: "好吃", ja: "美味しい", romaji: "Oishii" },
       { zh: "买单", ja: "お会計お願いします", romaji: "Okaikei onegaishimasu" },
-      { zh: "有中文菜单吗？", ja: "中国語のメニューはありますか", romaji: "Chuugokugo no menyuu wa arimasu ka" }
+      { zh: "有中文菜单吗？", ja: "中国語のメニューはありますか", romaji: "Chuugokugo no menyuu wa arimasu ka" },
+      { zh: "我要这个", ja: "これをください", romaji: "Kore wo kudasai" },
+      { zh: "不要辣", ja: "辛くないでください", romaji: "Karakunai de kudasai" },
+      { zh: "给我水", ja: "お水をください", romaji: "Omizu wo kudasai" },
+      { zh: "可以打包吗？", ja: "持ち帰りできますか", romaji: "Mochikaeri dekimasu ka" },
+      { zh: "推荐什么？", ja: "おすすめは何ですか", romaji: "Osusume wa nan desu ka" }
     ]},
     { category: "交通用语", items: [
       { zh: "这里怎么走？", ja: "ここはどう行きますか", romaji: "Koko wa dou ikimasu ka" },
@@ -43,7 +48,13 @@ export default function Phrases() {
       { zh: "可以试穿吗？", ja: "試着してもいいですか", romaji: "Shichaku shite mo ii desu ka" },
       { zh: "有折扣吗？", ja: "割引はありますか", romaji: "Waribiki wa arimasu ka" },
       { zh: "可以刷卡吗？", ja: "カードで払えますか", romaji: "Kaado de haraemasu ka" },
-      { zh: "能便宜一点吗？", ja: "もう少し安くなりますか", romaji: "Mou sukoshi yasuku narimasu ka" }
+      { zh: "能便宜一点吗？", ja: "もう少し安くなりますか", romaji: "Mou sukoshi yasuku narimasu ka" },
+      { zh: "有其他颜色吗？", ja: "他の色はありますか", romaji: "Hoka no iro wa arimasu ka" },
+      { zh: "有大一点的吗？", ja: "もっと大きいのはありますか", romaji: "Motto ookii no wa arimasu ka" },
+      { zh: "有小一点的吗？", ja: "もっと小さいのはありますか", romaji: "Motto chiisai no wa arimasu ka" },
+      { zh: "可以免税吗？", ja: "免税できますか", romaji: "Menzei dekimasu ka" },
+      { zh: "我要买这个", ja: "これを買います", romaji: "Kore wo kaimasu" },
+      { zh: "可以帮我包装吗？", ja: "包装してもらえますか", romaji: "Housou shite moraemasu ka" }
     ]},
     { category: "紧急用语", items: [
       { zh: "救命！", ja: "助けて！", romaji: "Tasukete!" },
