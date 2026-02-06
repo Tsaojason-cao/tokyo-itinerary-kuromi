@@ -153,7 +153,7 @@ function vitePluginManusDebugCollector(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
-  base: process.env.GITHUB_ACTIONS ? '/tokyo-itinerary-kuromi/' : '/',
+  base: process.env.GITHUB_ACTIONS === 'true' ? '/tokyo-itinerary-kuromi/' : '/',
   plugins,
   resolve: {
     alias: {
